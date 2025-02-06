@@ -1,0 +1,25 @@
+[Secion 1 project Setup]:
+1. Create two directory frontend and server
+
+1.1 Server:
+1. run npm init
+2. intsall required packages
+3. Instal typescrip as devDependencies npm instal -D typescript: Important because typescript code needs to be transcribed to JS when in production
+    install @type express and node
+4. create a tsconfig.json file by npx tsc --config, this file will transcribe ts to js, js i sreqired to run the server
+5. In the json change outdir value to ./dist, this is the path which will be used as js
+6. run npx tsc command which will create a dist folder in it there will be  a indes.js file
+7. Important: wherever a new pacakge is insalled, insatall npm install @type/package name as well for ts
+8. in the package.json create scripts build and start, build will buld the tsx tojs and start will start the server
+9. Dependencies are used in production (runtime), devDependencies are only used for development
+
+3. create src folder in it create index.ts file and
+4. config: Configuration settings (DB, environment variables, etc.)
+   controllers: Request handling logic (business logic for routes)
+   middlewares: Custom middleware (authentication, logging, error handling)
+   models: Database models (schemas if using MongoDB, PostgreSQL, etc.)
+   routes: Route definitions (API endpoints)
+   utils/         # Helper functions (reusable utility functions)
+5. create .env file,and include it in .gitignore file
+6. In packages.json add type:module
+
