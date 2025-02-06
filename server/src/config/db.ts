@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import pg from "pg";
 dotenv.config(); //since its not in the root directory
 
-const  db = new pg.Pool({
+const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: false,
 });
