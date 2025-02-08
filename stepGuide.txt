@@ -25,6 +25,7 @@
 14. create .env file,and include it in .gitignore file
 15. Connect to Database
 
+----------------------------------------------------------------------------------------------------------------
 [Section 2: Setup Frontend]
 1. Install Vite React with ts - npm create vite@latest . --template react-ts
 2. run npm install and  install axios react-router-dom
@@ -35,5 +36,14 @@
  3. Create components for login , register form and homepage
  4. in home page use axios to fetch data from backend
  5. in App.tsx use Router>Routes>Route to create routh path and element for login, register and home page
+
+ ----------------------------------------------------------------------------------------------------------------
+[Section 3: JWT Authentication]
+  Frontend:
+  1. Add Bootstrap
+  2.Create a Navigation Componenet, Link the the buttons to login and register using Navigate() and onclick
+  3. Create a login form, use useSate to set the value of the inputs, add onchange on input
+  4. Create a shared component for label, create an interface which define props names and types since typescript i sused
+  5. In login Form, use the component, use handleChange method tio change the state of input values
 
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Navigation from "./Navigation";
 
 const API_URL = "http://localhost:5000";
 
@@ -22,6 +23,7 @@ function HomePage() {
 
   return (
     <div>
+      <Navigation />
       <h1>{data}</h1>
       <h2>asdsa</h2>
     </div>

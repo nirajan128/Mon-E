@@ -1,4 +1,5 @@
 /* import { useState, useEffect } from "react"; */
+import './App.css';
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,7 +16,7 @@ function App(){
     <Router>
     <Routes>
        <Route path="/" element={<HomePage />} />
-       <Route path="/login" element={<LoginForm />} />
+       <Route path="/login" element={<LoginForm />} /> {/* Define the path */}
        <Route path="/register" element={<RegisterForm />} />
     </Routes>
   </Router>
