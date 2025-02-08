@@ -14,7 +14,7 @@ app.use('/api/use', userRouter); //the first param would be the link path shownd
 
 //MIDDLE WARE
 app.get("/", (req, res) => {
-  res.send("Server connected!!!!");
+  res.send("Server connected!!!!Damn");
 });
 
 app.listen(PORT, () => {

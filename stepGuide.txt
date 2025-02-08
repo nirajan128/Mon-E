@@ -12,14 +12,17 @@
 7. Important: wherever a new pacakge is insalled, insatall npm install @type/package name as well for ts
 8. in the package.json create scripts build and start, build will buld the tsx tojs and start will start the server
 9. Dependencies are used in production (runtime), devDependencies are only used for development
+10. install rimraff pagkage which will remove the file form a directory
+11. in build use rim raff sof the old file gets deleted and new transcribed file is created, rimraf dist && npx tsc"
 
-3. create src folder in it create index.ts file and
-4. config: Configuration settings (DB, environment variables, etc.)
+12. create src folder in it create index.ts file and
+13. config: Configuration settings (DB, environment variables, etc.)
    controllers: Request handling logic (business logic for routes)
    middlewares: Custom middleware (authentication, logging, error handling)
    models: Database models (schemas if using MongoDB, PostgreSQL, etc.)
    routes: Route definitions (API endpoints)
    utils/         # Helper functions (reusable utility functions)
-5. create .env file,and include it in .gitignore file
-6. In packages.json add type:module
+14. create .env file,and include it in .gitignore file
+15. Connect to Database
+
 

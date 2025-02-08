@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && npx tsc",
+    "build": "tsc --build",
     "start": "nodemon dist/index.js",
-    "dev": "tsc -w & nodemon dist/index.js"
+    "dev": "nodemon ./src/index.ts"
   },
   "keywords": [],
   "author": "",
