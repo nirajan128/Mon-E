@@ -29,4 +29,11 @@
 1. Install Vite React with ts - npm create vite@latest . --template react-ts
 2. run npm install and  install axios react-router-dom
 
+ --To test if the backend API url wors,
+ delete everthing from APP.tsx, cimport axios, create a state for data import the data usig backend URL and set the state to data and run thethe progran
+
+ 3. Create components for login , register form and homepage
+ 4. in home page use axios to fetch data from backend
+ 5. in App.tsx use Router>Routes>Route to create routh path and element for login, register and home page
+
 

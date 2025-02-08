@@ -1,31 +1,27 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+/* import { useState, useEffect } from "react"; */
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
-const API_URL = "http://localhost:5000";
+import LoginForm from "./components/forms/LoginForm";
+import RegisterForm from "./components/forms/RegisterForm";
+import HomePage from "./components/HomePage";
 
-function App() {
-  const [data, setData] = useState<string>("Loading...");
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(`${API_URL}/api/use/hey`);
-        console.log(response);
-        setData(response.data); // Update the state
-      } catch (error) {
-        setData("Error fetching data");
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchData();
-  }, []); // Runs once on component mount
-
-  return (
+function App(){
+  return(
     <div>
-      <h1>{data}</h1>
-      <h2>asdsa</h2>
-    </div>
-  );
+    <Router>
+    <Routes>
+       <Route path="/" element={<HomePage />} />
+       <Route path="/login" element={<LoginForm />} />
+       <Route path="/register" element={<RegisterForm />} />
+    </Routes>
+  </Router>
+  </div>
+  )
+  
 }
 
 export default App;
