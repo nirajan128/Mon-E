@@ -25,4 +25,8 @@
 14. create .env file,and include it in .gitignore file
 15. Connect to Database
 
+[Section 2: Setup Frontend]
+1. Install Vite React with ts - npm create vite@latest . --template react-ts
+2. run npm install and  install axios react-router-dom
+
 
