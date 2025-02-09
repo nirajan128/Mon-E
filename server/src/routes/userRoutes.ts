@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { registerUser } from "../model/dataModel";
-import db from "../config/db";
+import validData from "../middleware/validData";
 
 const route = Router();
 
@@ -8,7 +8,7 @@ route.get("/forms", (req, res) =>{
     res.json("Formss")
 })
 
-route.post("/register", async (req,res) => {
+route.post("/register", validData, async (req,res) => {
 
     try {
         //1. get the data from front end

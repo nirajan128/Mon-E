@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-empty */
 import { useState } from "react";
 import InputLabel from "../shared/InputLabel";
 
@@ -6,7 +8,8 @@ export default function RegisterForm() {
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
-    name:"",
+    firstName:"",
+    lastName:"",
     confirmPassword:""
   });
 
@@ -20,9 +23,15 @@ export default function RegisterForm() {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form Submitted:", inputValue);
+
+    try {
+      
+    } catch (error) {
+      
+    }
     // Perform login action (API call, validation, etc.)
   };
 
@@ -42,11 +51,18 @@ export default function RegisterForm() {
           </div>
           {/*  Input */}
           <InputLabel
-            type="name"
-            name="name"
-            value={inputValue.name}
+            type="text"
+            name="firstName"
+            value={inputValue.firstName}
             valueChange={handleInputChange}
-            label="User name"
+            label="first name"
+          />
+          <InputLabel
+            type="text"
+            name="lastName"
+            value={inputValue.lastName}
+            valueChange={handleInputChange}
+            label="last name"
           />
 
 
