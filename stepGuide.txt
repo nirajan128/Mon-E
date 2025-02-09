@@ -70,3 +70,4 @@
   9. Navigate to login route, get the input from fronte end, check if the user exists in db , check the password, and use the middleware to generate a jwt
   10. Create jwtAuth fle with which will check the token and authorize the use, create an interface for user which extends Request
       get the oken using header[], check the token against the secret if it matches set the user to its data
+  

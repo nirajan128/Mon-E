@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes";
+import protectedRoute from "./routes/protectedRoute";
 import database from "./config/db";
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(
 
 app.use(express.json());
 app.use('/api/user', userRouter); //the first param would be the link path shownd when userRouter is called
+app.use('/api/user', protectedRoute); //the first param would be the link path shownd when userRouter is called
 
 
 //MIDDLE WARE
