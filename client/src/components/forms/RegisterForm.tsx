@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-empty */
 import { useState } from "react";
 import InputLabel from "../shared/InputLabel";
+import LoadingSpinner from "../shared/LoadingSpinner";
+import ErrorAlertStatus from "../shared/ErrorAlert";
 
 export default function RegisterForm() {
   // State for handling form inputs
@@ -12,6 +12,8 @@ export default function RegisterForm() {
     lastName:"",
     confirmPassword:""
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>();
+  const [loading, setLoading] = useState(false);
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,15 +27,57 @@ export default function RegisterForm() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     console.log("Form Submitted:", inputValue);
+    
+    //2. get the input values
+    const {email,password,firstName,lastName, confirmPassword} = inputValue
 
-    try {
-      
-    } catch (error) {
-      
+    //3. if confitm password does not match
+    if(inputValue.confirmPassword !== inputValue.password){
+      setErrorMessage("Password does not match");
+      setLoading(false);
+      return;
     }
-    // Perform login action (API call, validation, etc.)
+
+    if (!email || !password || !firstName || !lastName || !confirmPassword) {
+      setErrorMessage("All fields are required!");
+      setLoading(false); // Stop loading on error
+      return;
+    }
+
+    //4. create a fetch request to the server and pass the usercred as json body
+    try {
+      const response = await fetch("http://localhost:5000/api/user/register",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({email,firstName,lastName,password}) //sends thedata in the body as JSON
+      })
+
+      //5. get the data response
+      /* const parseResponse = await response.json(); */
+
+      //6. Check the resposne
+      if(response.ok){
+        setErrorMessage(null);
+        alert("User Succesfully registered")
+      }else{
+        setErrorMessage("Error while registering")
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("An error occurred during registration.");
+    }finally{
+      setLoading(false); //stop the loading, regardless of the outcome
+    }
   };
+
+  // Show loading spinner when isLoading is true
+  if (loading) {
+    return <LoadingSpinner />; 
+  }
 
   return (
     <div className="d-flex justify-content-center align-items-center customHeight">
@@ -94,9 +138,13 @@ export default function RegisterForm() {
           />
 
           {/* Submit Button */}
-          <button className="btn btn-primary w-100 py-2 mt-3" type="submit">
-            Register
+          <button className="btn btn-primary bgAccent text-dark mt-3" disabled={loading}>
+            {loading ? "Logging in..." : "Register"}
           </button>
+          {/* Conditionally render AlertStatus component */}
+          {errorMessage && (
+            <ErrorAlertStatus message={errorMessage} state="alert-danger" />
+          )}
 
           <p className="mt-5 mb-3 text-body-secondary text-center">© 2017–2024</p>
         </form>

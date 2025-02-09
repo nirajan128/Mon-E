@@ -44,7 +44,16 @@
   2.Create a Navigation Componenet, Link the the buttons to login and register using Navigate() and onclick
   3. Create a login form, use useSate to set the value of the inputs, add onchange on input
   4. Create a shared component for label, create an interface which define props names and types since typescript i sused
-  5. In login Form, use the component, use handleChange method tio change the state of input values
+  5. In login Form, use the component, use handleChange method tio change the state of input values 
+    after step 6 of backend
+  6. Do the same for for register form
+  7, create state for loading spinner and error message, which will use shared component
+  8. Fetch the data frombackend with post method and data type as application.json,
+     pass the user input as json to backend
+  9. check the resposne if its ok set the error message to null, if not set the error message
+  10. set a if  satement for invalid inputs
+  11. set the spinner component based on spinner boolean value 
+
 
   Backend:
   1. Install bycrypt and jwtwebtoken
