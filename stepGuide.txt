@@ -46,4 +46,11 @@
   4. Create a shared component for label, create an interface which define props names and types since typescript i sused
   5. In login Form, use the component, use handleChange method tio change the state of input values
 
+  Backend:
+  1. Install bycrypt and jwtwebtoken
+  2. Create a Model folder and dataModel file, create db queries
+  3. Goto userRoutes> register and  reqest the body, call the userModal pass the data as param and regsiter the user
+  4. **All the tables names and column names must be in lowercase**
+  5 Test the route: Goto postman, select POST action, enter the base URL add the route path defined in index.tsx/ route path in userRoutr postman  
+    select body , select json, pass all the data s json since the data are from body of the form
 

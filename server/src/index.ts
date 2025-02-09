@@ -17,7 +17,7 @@ app.use(
 );
 
 app.use(express.json());
-app.use('/api/use', userRouter); //the first param would be the link path shownd when userRouter is called
+app.use('/api/user', userRouter); //the first param would be the link path shownd when userRouter is called
 
 
 //MIDDLE WARE
