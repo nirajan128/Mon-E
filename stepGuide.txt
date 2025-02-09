@@ -64,3 +64,6 @@
     select body , select json, pass all the data s json since the data are from body of the form
   6. Create a ValidDta Middleware that checks if the inputs are valid, inlcude this middle ware in register route
 
+  7. Generate a secret key using node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" and store it in .env file
+8. create a utlities folder in it create a jwt generator file, use jwtWbToken and dotenv, create a method that takes user_id as param and returns 
+   json token using jwt.sign(payload, secret, )
