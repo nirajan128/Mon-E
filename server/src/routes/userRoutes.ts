@@ -48,10 +48,10 @@ route.post("/login", validData, async(req, res)=>{
       }
 
       //4. if the password match and user exists generate a jwt
-      const jwtToken = jwtGenerator(user.rows[0].id)
+      const token = jwtGenerator(user.rows[0].id)
 
       //5. return jwt to the front end
-      res.json({jwtToken});
+      res.json({token});
     } catch (error) {
         console.log(error);
         res.json({error});

@@ -65,5 +65,8 @@
   6. Create a ValidDta Middleware that checks if the inputs are valid, inlcude this middle ware in register route
 
   7. Generate a secret key using node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" and store it in .env file
-8. create a utlities folder in it create a jwt generator file, use jwtWbToken and dotenv, create a method that takes user_id as param and returns 
+  8. create a utlities folder in it create a jwt generator file, use jwtWbToken and dotenv, create a method that takes user_id as param and returns 
    json token using jwt.sign(payload, secret, )
+  9. Navigate to login route, get the input from fronte end, check if the user exists in db , check the password, and use the middleware to generate a jwt
+  10. Create jwtAuth fle with which will check the token and authorize the use, create an interface for user which extends Request
+      get the oken using header[], check the token against the secret if it matches set the user to its data
