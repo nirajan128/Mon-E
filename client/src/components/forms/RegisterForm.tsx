@@ -2,6 +2,7 @@ import { useState } from "react";
 import InputLabel from "../shared/InputLabel";
 import LoadingSpinner from "../shared/LoadingSpinner";
 import ErrorAlertStatus from "../shared/ErrorAlert";
+import { registerUser } from "../../Api";
 
 export default function RegisterForm() {
   // State for handling form inputs
@@ -48,24 +49,9 @@ export default function RegisterForm() {
 
     //4. create a fetch request to the server and pass the usercred as json body
     try {
-      const response = await fetch("http://localhost:5000/api/user/register",{
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({email,firstName,lastName,password}) //sends thedata in the body as JSON
-      })
-
-      //5. get the data response
-      /* const parseResponse = await response.json(); */
-
-      //6. Check the resposne
-      if(response.ok){
-        setErrorMessage(null);
-        alert("User Succesfully registered")
-      }else{
-        setErrorMessage("Error while registering")
-      }
+      await registerUser({ email, password, firstName, lastName });
+      setErrorMessage(null);
+      alert("User successfully registered");
     } catch (error) {
       console.error(error);
       setErrorMessage("An error occurred during registration.");

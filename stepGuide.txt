@@ -54,6 +54,10 @@
   10. set a if  satement for invalid inputs
   11. set the spinner component based on spinner boolean value 
 
+     after step 12 in server
+   12. create APi.ts that contains all the routes and api request for the app, pas sthe user input as param and crete an interface for each of them which would be the data type for the related param
+   13. In register form update the fetch with the register Api method
+
 
   Backend:
   1. Install bycrypt and jwtwebtoken
@@ -70,4 +74,8 @@
   9. Navigate to login route, get the input from fronte end, check if the user exists in db , check the password, and use the middleware to generate a jwt
   10. Create jwtAuth fle with which will check the token and authorize the use, create an interface for user which extends Request
       get the oken using header[], check the token against the secret if it matches set the user to its data
+  11. Create a protectedRoute.ts and pass JWTAuth as middleware
+  12. TESTING: got to  postman, make a post request for login and pass user cred as body
+       which will generate a token, then make a get request for dashboard
+       goto AUthorization and baerer token and pass the token  
   
