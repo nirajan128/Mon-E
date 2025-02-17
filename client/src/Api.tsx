@@ -17,9 +17,9 @@ interface RegisterUserData {
   }
   
   // ✅ Define Type for API Response
-  interface AuthResponse {
+ /*  interface AuthResponse {
     accessToken: string;
-  }
+  } */
 
 // Register a new user
 export const registerUser = async (userData: RegisterUserData) => {
@@ -32,8 +32,8 @@ export const loginUser = async (credentials: LoginCredentials) => {
 };
 
 // Get protected dashboard data
-export const getDashboard = async (token: AuthResponse) => {
-    return axios.get(`${API_BASE_URL}/api/dashboard`, {
+export const getDashboard = async (token: string) => {
+    return axios.get(`${API_BASE_URL}/api/user/dashboard`, {
         headers: { Authorization: `Bearer ${token}` },
     });
 };

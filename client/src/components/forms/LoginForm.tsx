@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import InputLabel from "../shared/InputLabel";
+import { loginUser } from "../../Api";
+import { AuthContext } from "../../AuthContext";
+import {  useNavigate } from "react-router-dom";
+import ErrorAlertStatus from "../shared/ErrorAlert";
 
 export default function LoginForm() {
   // State for handling form inputs
@@ -7,6 +11,9 @@ export default function LoginForm() {
     email: "",
     password: ""
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>();
+  const {login} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,8 +25,18 @@ export default function LoginForm() {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const {email, password} = inputValue;
+    try {
+      const res = await loginUser({email, password});
+      login(res.data.token);
+      console.log(res.data.token);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("Invalid Credenitials")
+    }
     console.log("Form Submitted:", inputValue);
     // Perform login action (API call, validation, etc.)
   };
@@ -61,7 +78,10 @@ export default function LoginForm() {
           <button className="btn btn-primary w-100 py-2 mt-3" type="submit">
             Sign in
           </button>
-
+            {/* Conditionally render AlertStatus component */}
+          {errorMessage && (
+            <ErrorAlertStatus message={errorMessage} state="alert-danger" />
+          )}
           <p className="mt-5 mb-3 text-body-secondary text-center">© 2017–2024</p>
         </form>
       </div>

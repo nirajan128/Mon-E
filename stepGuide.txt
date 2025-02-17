@@ -57,7 +57,12 @@
      after step 12 in server
    12. create APi.ts that contains all the routes and api request for the app, pas sthe user input as param and crete an interface for each of them which would be the data type for the related param
    13. In register form update the fetch with the register Api method
-
+   14. Creaae an AUthContext.tsx, which uses(CreateContext fro global state, use state and useeffect), this file will set
+   local storage based on login param and return the token,login,logout function to children(nodes or components)
+   15. In the login form , use Api.tsx login , and AuthContext login to, pass the user credentials to bcaend and get the token and pass
+   it as a parameter to the AuthContext which set the token in the local storage
+   16. In dashboard.tsx use AuthContext to check if the token has been set
+   17. In App.tsx wrapp all route to AuthContext so every page can access the AUthentication state token
 
   Backend:
   1. Install bycrypt and jwtwebtoken
