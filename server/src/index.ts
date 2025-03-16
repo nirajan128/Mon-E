@@ -1,5 +1,6 @@
 import express from 'express';
-import cors from "cors";
+import cors from 'cors';
+import db from './config/db';
 
 const app = express();
 const PORT = 5000;
@@ -11,6 +12,8 @@ app.use(express.json());
 app.get("/",(req,res) =>{
     res.json("HEllo");
 })
+
+console.log(db)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
