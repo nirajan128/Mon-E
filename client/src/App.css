@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap');
+
+
+:root{
+    --Navy:#205781;
+    --Blue:#4F959D;
+    --Teal:#98D2C0;
+    --Yellow:#F6F8D5;
+    --openSans: "Open Sans", sans-serif;
+    --montserrat: "Montserrat", sans-serif;
+    --roboto:"Roboto", sans-serif;
+    --logo: "Sarpanch", sans-serif;
+
+}
+
+
+
+#homeContainer{
+    background-color: var(--Yellow);
+    height: 100vh;
+}
+
+#logo{
+    color: var(--Navy);
+    font-family: var(--logo);
+}
