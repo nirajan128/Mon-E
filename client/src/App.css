@@ -2,28 +2,55 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 
 :root{
-    --Navy:#205781;
-    --Blue:#4F959D;
-    --Teal:#98D2C0;
-    --Yellow:#F6F8D5;
+    --Navy:#213555;
+    --Blue:#3E5879;
+    --Beige:#D8C4B6;
+    --LightBeige:#F5EFE7;
+    --BrightYellow: #FFEB00;
     --openSans: "Open Sans", sans-serif;
     --montserrat: "Montserrat", sans-serif;
     --roboto:"Roboto", sans-serif;
-    --logo: "Sarpanch", sans-serif;
+    --sarpanch: "Sarpanch", sans-serif;
+    --workSans: "Work Sans", sans-serif;
 
 }
 
 
 
 #homeContainer{
-    background-color: var(--Yellow);
+    background-color: var(--Navy);
     height: 100vh;
 }
 
+
+
 #logo{
-    color: var(--Navy);
-    font-family: var(--logo);
+    color: var(--Beige);
+    font-family: var(--montserrat);
+    font-weight: 500;
+    font-size: 3vw !important ;
+    margin-right: 15px;
 }
+
+.tilted-e{
+    position: absolute;
+    transform: rotate(-91deg);
+    font-family: var(--sarpanch);
+}
+
+.slogan h4 {
+    font-family: var(--workSans);
+    font-size: 7vw;
+    font-weight: 800;
+    -webkit-text-stroke: 3px var(--LightBeige);
+    paint-order: stroke fill;
+    color: var(--Navy);
+}
+
+
+
+
