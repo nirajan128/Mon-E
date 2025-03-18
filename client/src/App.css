@@ -4,39 +4,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-
-:root{
-    --Navy:#213555;
-    --Blue:#3E5879;
-    --Beige:#D8C4B6;
-    --LightBeige:#F5EFE7;
+:root {
+    --Navy: #213555;
+    --Blue: #3E5879;
+    --Beige: #D8C4B6;
+    --LightBeige: #F5EFE7;
     --BrightYellow: #FFEB00;
     --openSans: "Open Sans", sans-serif;
     --montserrat: "Montserrat", sans-serif;
-    --roboto:"Roboto", sans-serif;
+    --roboto: "Roboto", sans-serif;
     --sarpanch: "Sarpanch", sans-serif;
     --workSans: "Work Sans", sans-serif;
-
 }
 
-
-
-#homeContainer{
+/* Mobile-first styles */
+#homeContainer {
     background-color: var(--Navy);
     height: 100vh;
 }
 
-
-
-#logo{
+#logo {
     color: var(--Beige);
     font-family: var(--montserrat);
     font-weight: 500;
-    font-size: 3vw !important ;
-    margin-right: 15px;
+    font-size: 10vw;
+    margin-right: 10px;
 }
 
-.tilted-e{
+.tilted-e {
     position: absolute;
     transform: rotate(-91deg);
     font-family: var(--sarpanch);
@@ -44,13 +39,107 @@
 
 .slogan h4 {
     font-family: var(--workSans);
-    font-size: 7vw;
+    font-size: 12vw;
     font-weight: 800;
-    -webkit-text-stroke: 3px var(--LightBeige);
+    -webkit-text-stroke: 2px var(--LightBeige);
     paint-order: stroke fill;
     color: var(--Navy);
 }
 
+.components {
+    position: relative;
+}
 
+.rect {
+    width: 120px;
+    height: 120px;
+    align-self: center;
+    transform-style: preserve-3d;
+    transform: perspective(300px) rotateX(120deg) rotateZ(63deg);
+    margin-bottom: 100px;
+    position: absolute;
+}
 
+.r1 {
+    border: 2px solid var(--Beige);
+    box-shadow: 0px -2px 20px -5px var(--Blue);
+    right: 0.5em;
+    top: -7em;
+}
 
+.r2 {
+    border: 2px solid var(--Beige);
+    top: 1em;
+    right: 0.5em;
+    box-shadow: 0px -2px 20px -5px var(--Blue);
+}
+
+.r3 {
+    border: 2px solid var(--Blue);
+    top: -3em;
+    right: 0.3em;
+}
+
+.formContainer{
+    background-color: var(--LightBeige);
+}
+
+/* Tablet styles */
+@media (min-width: 576px) {
+    #logo {
+        font-size: 6vw;
+    }
+    
+    .slogan h4 {
+        font-size: 8vw;
+    }
+
+    .rect {
+        width: 180px;
+        height: 180px;
+        margin-bottom: 150px;
+    }
+
+    .r1 {
+        right: 1em;
+        top: -9em;
+    }
+    .r2 {
+        top: 2em;
+        right: 1em;
+    }
+    .r3 {
+        top: -5em;
+        right: 1em;
+    }
+}
+
+/* Laptop styles */
+@media (min-width: 992px) {
+    #logo {
+        font-size: 4vw;
+    }
+    
+    .slogan h4 {
+        font-size: 7vw;
+    }
+
+    .rect {
+        width: 250px;
+        height: 250px;
+        margin-bottom: 300px;
+    }
+
+    .r1 {
+        right: 1em;
+        top: -14em;
+    }
+    .r2 {
+        top: 4em;
+        right: 1em;
+    }
+    .r3 {
+        top: -5em;
+        right: 0.5em;
+    }
+}

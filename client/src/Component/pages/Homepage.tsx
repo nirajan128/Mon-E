@@ -1,22 +1,26 @@
 import "../../App.css"
 import Navigation from "../Shared/Navigation";
-import Scene from "../Shared/Cube";
+import Coin from "../Shared/3D";
+import SignInForm from "../form/SignInForm";
+
 function HomePage() {
     return(
         <div id="homeContainer" className="container-fluid">
             <Navigation />
-            <div className="row">
+            <div className="row" style={{height:"80%"}}>
                 <div className="col-sm-12 col-md-8 d-flex flex-col justify-content-center align-items-center">
                     <div className="slogan p-1">
                    <h4>Track</h4>
                    <h4>Save</h4>
                     <h4>Grow</h4>
                     </div>
-                    <div>
-                        <Scene />
+                    <div className="components">
+                        <Coin />
                     </div>
                 </div>
-                <div className="col-sm-12 col-md-4"></div>
+                <div className="col-sm-12 col-md-4">
+                    <SignInForm />
+                </div>
             </div>
         </div>
     )
