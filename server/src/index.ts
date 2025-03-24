@@ -1,10 +1,15 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import express from 'express';
-import cors from 'cors';
 import passport from "passport";
 import session from "express-session"
 import "./config/passport";
+import cors from 'cors';
 import authRoutes from "./routes/authRoute";
 import protectedRoute from './routes/protectedRoutes';
+
+
 
 const app = express();
 const PORT = 5000;
