@@ -2,7 +2,7 @@ import React from "react";
 const SignInForm: React.FC = () => {
   return (
     <div className="container d-flex justify-content-center  align-items-center">
-      <div className="card p-4 shadow formContainer">
+      <div className="card p-4 shadow formContainer" style={{maxWidth:"350px", width:"100%"}}>
         <h3 className="text-center mb-3">Sign In</h3>
         
         {/* Google Sign-In Button */}

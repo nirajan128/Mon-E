@@ -8,7 +8,7 @@ function HomePage() {
         <div id="homeContainer" className="container-fluid">
             <Navigation />
             <div className="row" style={{height:"80%"}}>
-                <div className="col-sm-12 col-md-8 d-flex flex-col justify-content-center align-items-center">
+                <div className="col-sm-12 col-md-7 d-flex flex-col justify-content-center align-items-center">
                     <div className="slogan p-1">
                    <h4>Track</h4>
                    <h4>Save</h4>
@@ -18,7 +18,7 @@ function HomePage() {
                         <Coin />
                     </div>
                 </div>
-                <div className="col-sm-12 col-md-4">
+                <div className="col-sm-12 col-md-5">
                     <SignInForm />
                 </div>
             </div>
