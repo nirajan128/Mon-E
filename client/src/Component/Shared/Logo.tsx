@@ -1,11 +1,8 @@
 import "../../App.css";
 function Logo(){
   return (
-    <div id="logo">
-    <span className="m">M</span>
-    <span className="coin">o</span>
-    <span className="n">n</span>
-    <span className="tilted-e">M</span>
+  <div className="d-flex justify-content-center align-items-center" >
+   <h1 id="logo" className="p-2">Mon-E</h1>
 </div>
   )
 }
