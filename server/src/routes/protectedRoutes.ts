@@ -9,7 +9,11 @@ const route = Router();
 // if it passes, the route moves on to next middleware which displays the validUserData
 
 //Also uses [isAuthenticated middleware] of express for googleOAuth
-route.get("/dashboard", jwtAuthenticator,isAuthenticated, (req:Request, res:Response, next:NextFunction) => {
+
+// Middleware: Requires authentication (JWT or Google OAuth)
+route.use(jwtAuthenticator, isAuthenticated);
+
+route.get("/dashboard", (req:Request, res:Response, next:NextFunction) => {
     const validUser = (req as any).user;
     /* console.log(validUser); */
      res.json(validUser);
