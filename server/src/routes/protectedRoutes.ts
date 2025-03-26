@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import jwtAuthenticator from "../middleware/jwtAuthenticator";
 import { isAuthenticated } from "../middleware/googleAuth";
+import db from "../config/db";
 
 const route = Router();
 
@@ -17,6 +18,21 @@ route.get("/dashboard", (req:Request, res:Response, next:NextFunction) => {
     const validUser = (req as any).user;
     /* console.log(validUser); */
      res.json(validUser);
-})
+});
+
+/**
+ * @route   GET /expenses
+ * @desc    Get all expenses for the authenticated user
+ */
+route.get("/expenses", async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).user.id; // Get user ID from session
+        const result = await db.query("SELECT * FROM moneexpenses WHERE id = $1", [userId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error fetching expenses:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 export default route;
