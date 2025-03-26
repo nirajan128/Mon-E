@@ -35,4 +35,26 @@ route.get("/expenses", async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @route   POST /expenses
+ * @desc    Add a new expense for the authenticated user
+ */
+route.post("/expenses", async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).user.id;
+        const { amount, category, description } = req.body;
+
+        const result = await db.query(
+            "INSERT INTO moneExpenses (id, amount, category, description) VALUES ($1, $2, $3, $4) RETURNING *",
+            [userId, amount, category, description]
+        );
+
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error adding expense:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
 export default route;
