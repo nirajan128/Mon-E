@@ -57,7 +57,6 @@ route.post("/expenses", async (req: Request, res: Response) => {
 });
 
 
-
 /**
  * @route   PUT /expenses
  * @desc    Updates expenses for the authenticated user
@@ -111,6 +110,98 @@ route.delete("/expenses/:id", async (req: Request, res: Response, next: NextFunc
         res.status(500).json({ error: error.message || "Internal Server Error" });
     }
 });
+
+/**
+ * @route   GET /income
+ * @desc    Get all income for the authenticated user
+ */
+route.get("/income", async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).user.id; // Get user ID from session
+        const result = await db.query("SELECT * FROM moneincome WHERE id = $1", [userId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error fetching income:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+/**
+ * @route   POST /income
+ * @desc    Add a new income for the authenticated user
+ */
+route.post("/income", async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).user.id;
+        const { amount, source, description } = req.body;
+
+        const result = await db.query(
+            "INSERT INTO moneincome (id, amount, source, description) VALUES ($1, $2, $3, $4) RETURNING *",
+            [userId, amount, source, description]
+        );
+
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error adding income:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+/**
+ * @route   PUT /income
+ * @desc    Updates income for the authenticated user
+ */
+route.put("/income/:id", async (req: Request, res: Response, next: NextFunction):Promise<void> => {
+    try {
+        const userId = (req as any).user.id;
+        const expenseId = req.params.id;
+        const { amount, source, description } = req.body;
+
+        const result = await db.query(
+            "UPDATE moneincome SET amount = $1, source = $2, description = $3 WHERE income_id = $4 AND id = $5 RETURNING *",
+            [amount, source, description, expenseId, userId]
+        );
+
+        if (result.rowCount === 0) {
+            res.status(404).json({ error: "Income data not found or unauthorized" });
+            return;
+        }
+
+        res.json(result.rows[0]);
+    } catch (error: any) {
+        console.error("Error updating income:", error);
+        res.status(500).json({ error: error.message || "Internal Server Error" });
+    }
+});
+
+
+/**
+ * @route   DELETE /income
+ * @desc    Delete income for the authenticated user
+ */
+route.delete("/income/:id", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const userId = (req as any).user.id;
+        const expenseId = req.params.id;
+
+        const result = await db.query(
+            "DELETE FROM moneincome WHERE income_id = $1 AND id = $2 RETURNING *",
+            [expenseId, userId]
+        );
+
+        if (result.rowCount === 0) {
+           res.status(404).json({ error: "Expense not found or unauthorized" });
+           return;
+        }
+
+        res.json({ message: "Expense deleted successfully" });
+    } catch (error: any) {
+        console.error("Error deleting expense:", error);
+        res.status(500).json({ error: error.message || "Internal Server Error" });
+    }
+});
+
 
 // Add this at the end of your route file
 route.use((err: Error, req: Request, res: Response, next: NextFunction) => {
