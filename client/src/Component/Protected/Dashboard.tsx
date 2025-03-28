@@ -26,7 +26,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (!token) {
       logout();
-      navigate("/login");
+      navigate("/");
       return;
     }
 
@@ -39,7 +39,7 @@ export default function Dashboard() {
       } catch (error) {
         console.error("Auth problem:", error);
         logout();
-        navigate("/login");
+        navigate("/");
       }
     };
 
@@ -67,7 +67,7 @@ export default function Dashboard() {
               <Link className="nav-link text-white" to="/dashboard/expenses">Expenses</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/dashboard/settings">Settings</Link>
+              <Link className="nav-link text-white" to="/dashboard/income">Income</Link>
             </li>
           </ul>
         )}
@@ -88,7 +88,7 @@ export default function Dashboard() {
               <Link className="nav-link text-white" to="/dashboard/expenses">Expenses</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/dashboard/settings">Settings</Link>
+              <Link className="nav-link text-white" to="/dashboard/income">Income</Link>
             </li>
           </ul>
         </nav>
@@ -112,7 +112,7 @@ export default function Dashboard() {
           )}
 
           {/* Logout Button */}
-          <button onClick={() => { logout(); navigate("/login"); }} className="btn btn-danger mt-3">
+          <button onClick={() => { logout(); navigate("/"); }} className="btn btn-danger mt-3">
             Logout
           </button>
         </main>

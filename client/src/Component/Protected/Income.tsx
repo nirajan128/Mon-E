@@ -2,19 +2,18 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
 
-interface Expense {
+interface Income {
   id: number;
   date: string;
-  category: string;
+  source: string;
   description: string;
   amount: number;
-  paymentType: string;
 }
 
-export default function Expenses() {
+export default function Income() {
   const API_BASE_URL = "http://localhost:5000"; // Your backend URL
   const { token, logout } = useAuth();
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [income, setIncome] = useState<Income[]>([]);
   
   // Fetch expenses from backend
   useEffect(() => {
@@ -23,12 +22,12 @@ export default function Expenses() {
       return;
     }
 
-    const fetchExpenses = async () => {
+    const fetchIncome = async () => {
       try {
-        const response = await axios.get<Expense[]>(`${API_BASE_URL}/valid/expenses`, {
+        const response = await axios.get<Income[]>(`${API_BASE_URL}/valid/income`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setExpenses(response.data);
+        setIncome(response.data);
         console.log(response.data)
       } catch (error) {
         console.error("Failed to fetch expenses:", error);
@@ -36,7 +35,7 @@ export default function Expenses() {
       }
     };
 
-    fetchExpenses();
+    fetchIncome();
   }, [token, logout]);
 
   return (
@@ -46,28 +45,26 @@ export default function Expenses() {
         <thead className="thead-dark">
           <tr>
             <th>Date</th>
-            <th>Category</th>
+            <th>Source</th>
             <th>Amount ($)</th>
             <th>Description</th>
-            <th>Payment Type</th>
   
           </tr>
         </thead>
         <tbody>
-          {expenses.length > 0 ? (
-            expenses.map((expense) => (
-              <tr key={expense.id}>
-                <td>{expense.date.toString().split("T")[0]}</td>
-                <td>{expense.category}</td>
-                <td>{expense.amount}</td>
-                <td>{expense.description}</td>
-                <td>{expense.paymentType}</td>
+          {income.length > 0 ? (
+            income.map((income) => (
+              <tr key={income.id}>
+                <td>{income.date.toString().split("T")[0]}</td>
+                <td>{income.source}</td>
+                <td>{income.amount}</td>
+                <td>{income.description}</td>
               </tr>
             ))
           ) : (
             <tr>
               <td colSpan={3} className="text-center">
-                No expenses found
+                No income found
               </td>
             </tr>
           )}

@@ -42,11 +42,11 @@ route.get("/expenses", async (req: Request, res: Response) => {
 route.post("/expenses", async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        const { amount, category, description } = req.body;
+        const { amount, category, description,paymentType } = req.body;
 
         const result = await db.query(
-            "INSERT INTO moneexpenses (id, amount, category, description) VALUES ($1, $2, $3, $4) RETURNING *",
-            [userId, amount, category, description]
+            "INSERT INTO moneexpenses (id, amount, category, description, payment_type) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+            [userId, amount, category, description, paymentType]
         );
 
         res.status(201).json(result.rows[0]);
@@ -65,11 +65,11 @@ route.put("/expenses/:id", async (req: Request, res: Response, next: NextFunctio
     try {
         const userId = (req as any).user.id;
         const expenseId = req.params.id;
-        const { amount, category, description } = req.body;
+        const { amount, category, description, paymentType } = req.body;
 
         const result = await db.query(
-            "UPDATE moneexpenses SET amount = $1, category = $2, description = $3 WHERE expense_id = $4 AND id = $5 RETURNING *",
-            [amount, category, description, expenseId, userId]
+            "UPDATE moneexpenses SET amount = $1, category = $2, description = $3, payment_type = $4 WHERE expense_id = $5 AND id = $6 RETURNING *",
+            [amount, category, description,paymentType, expenseId, userId]
         );
 
         if (result.rowCount === 0) {
