@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
+import "../../App.css"
 
 interface Expense {
   id: number;
@@ -15,8 +16,9 @@ export default function Expenses() {
   const API_BASE_URL = "http://localhost:5000"; // Your backend URL
   const { token, logout } = useAuth();
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  
-  // Fetch expenses from backend
+  const [totalExpenses, setTotalExpenses] = useState<number>(0);
+  const [categoryTotals, setCategoryTotals] = useState<{ [key: string]: number }>({});
+   // Fetch expenses from backend
   useEffect(() => {
     if (!token) {
       logout(); // Ensure user is logged in
@@ -39,7 +41,51 @@ export default function Expenses() {
     fetchExpenses();
   }, [token, logout]);
 
+  // Calculate total expenses
+  useEffect(() => {
+    const total = expenses.reduce((sum, expense) => sum + expense.amount,0);
+    setTotalExpenses(total);
+  }, [expenses]);
+
+ // Calculate total expenses and category totals
+ useEffect(() => {
+    // Calculate overall total
+    const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    setTotalExpenses(total);
+
+    // Calculate category-wise totals
+    const categoryMap: { [key: string]: number } = {};
+    expenses.forEach(({ category, amount }) => {
+      categoryMap[category] = (categoryMap[category] || 0) + amount;
+    });
+
+    setCategoryTotals(categoryMap);
+  }, [expenses]);
+
   return (
+    <>
+    <div>
+        <div className="row">
+            <div className="col-sm-12 col-md-6">
+                <h1 className="totalExp">${totalExpenses}</h1>
+            </div>
+            <div className="col-sm-12 col-md-6 categoryContainer">
+                <div className="p-2 ">
+                <ul>
+        {Object.entries(categoryTotals).length > 0 ? (
+          Object.entries(categoryTotals).map(([category, total]) => (
+            <li key={category}>
+              <strong>{category}:</strong> ${total}
+            </li>
+          ))
+        ) : (
+          <li className="list-group-item text-center">No expenses found</li>
+        )}
+      </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div className="container mt-4">
       <h2>Expenses</h2>
       <table className="table table-bordered table-striped">
@@ -74,5 +120,6 @@ export default function Expenses() {
         </tbody>
       </table>
     </div>
+    </>
   );
 }

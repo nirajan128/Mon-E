@@ -121,6 +121,15 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
     font-family: var(--openSans);
 }
 
+.totalExp{
+    font-family: var(--sarpanch);
+    color: var(--Navy);
+}
+
+.categoryContainer{
+    background-color: var(--LightBeige);
+}
+
 /* Tablet styles */
 @media (min-width: 576px) {
     #logo {
@@ -164,6 +173,10 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
         --font-a: 0.9375rem;
         --font-label: 0.9375rem;
         --font-input: 0.9375rem;
+    }
+
+    .totalExp{
+        font-size: 5vw;
     }
     #logo {
         font-size: 4vw;
