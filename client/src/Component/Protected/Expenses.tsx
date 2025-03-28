@@ -30,7 +30,12 @@ export default function Expenses() {
         const response = await axios.get<Expense[]>(`${API_BASE_URL}/valid/expenses`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setExpenses(response.data);
+        // Ensure amount is a number
+    const formattedExpenses = response.data.map(expense => ({
+        ...expense,
+        amount: Number(expense.amount), // Convert amount to number
+      }));
+        setExpenses(formattedExpenses)
         console.log(response.data)
       } catch (error) {
         console.error("Failed to fetch expenses:", error);
@@ -41,9 +46,8 @@ export default function Expenses() {
     fetchExpenses();
   }, [token, logout]);
 
-  // Calculate total expenses
   useEffect(() => {
-    const total = expenses.reduce((sum, expense) => sum + expense.amount,0);
+    const total = expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
     setTotalExpenses(total);
   }, [expenses]);
 
@@ -65,13 +69,15 @@ export default function Expenses() {
   return (
     <>
     <div>
+        <h1 className="expenseLabel">EXPENSES</h1>
         <div className="row">
-            <div className="col-sm-12 col-md-6">
+            <div className="col-sm-12 col-md-8">
+                
                 <h1 className="totalExp">${totalExpenses}</h1>
             </div>
-            <div className="col-sm-12 col-md-6 categoryContainer">
-                <div className="p-2 ">
-                <ul>
+            <div className="col-sm-12 col-md-4">
+                <div className="p-2 d-flex justify-content-center align-items-center">
+                <ul className="list-style-none">
         {Object.entries(categoryTotals).length > 0 ? (
           Object.entries(categoryTotals).map(([category, total]) => (
             <li key={category}>
@@ -87,7 +93,6 @@ export default function Expenses() {
         </div>
     </div>
     <div className="container mt-4">
-      <h2>Expenses</h2>
       <table className="table table-bordered table-striped">
         <thead className="thead-dark">
           <tr>
