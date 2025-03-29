@@ -116,9 +116,27 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
     right: 0.3em;
 }
 
+.category-box{
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--Blue);
+    width: 150px;
+    text-align: center;
+    font-family: var(--montserrat);
+    color: white;
+}
 .formContainer{
     background-color: var(--LightBeige);
     font-family: var(--openSans);
+}
+
+select{
+    font-family: var(--montserrat) !important;
+    background-color: var(--LightBeige) !important;
+}
+
+table{
+    font-family: var(--workSans);
 }
 
 .totalExp{

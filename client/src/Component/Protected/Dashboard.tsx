@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
@@ -45,6 +46,9 @@ export default function Dashboard() {
 
     fetchUser();
   }, [token, logout, navigate]);
+
+  const now = new Date();
+  const dateTime = now.toLocaleString(); 
 
   return (
     <div className="container-fluid">
@@ -97,15 +101,17 @@ export default function Dashboard() {
         <main className="col-md-9 col-lg-10 p-4">
           {location.pathname === "/dashboard" ? (
             <>
-              <h1>Dashboard</h1>
+            <div className="d-flex justify-content-end">
               {user ? (
                 <div>
-                  <h2>Welcome, {user.firstname} {user.lastname}!</h2>
-                  <p>Email: {user.email}</p>
+                  <h4>Welcome, {user.firstname}!</h4>
+                  <p>{dateTime}</p>
                 </div>
               ) : (
                 <p>Loading user data...</p>
               )}
+            </div>
+            
             </>
           ) : (
             <Outlet />
