@@ -5,6 +5,7 @@ import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
 import axios from "axios";
 import Logo from "../Shared/Logo";
 import "../../App.css";
+import LogoLight from "../Shared/LogoLight";
 
 interface UserData {
   id: number;
@@ -53,10 +54,10 @@ export default function Dashboard() {
   return (
     <div className="container-fluid">
       {/* Navbar for Small Screens */}
-      <nav className="bg-dark text-white p-3 d-md-none w-100">
+      <nav className="dashNav text-white p-3 d-md-none w-100">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
-            <Logo />
+            <LogoLight />
           </div>
           <button className="btn btn-light" onClick={() => setSidebarOpen(!sidebarOpen)}>
             ☰ Menu
@@ -80,18 +81,19 @@ export default function Dashboard() {
       {/* Main Row (Sidebar + Content) */}
       <div className="row">
         {/* Sidebar (Visible Only on Large Screens) */}
-        <nav className="col-md-3 col-lg-2 d-none d-md-block bg-dark text-white p-3 vh-100">
+        <nav className="col-md-3 col-lg-2 d-none d-md-block dashNav text-white p-3 vh-100">
           <div className="text-center mb-3">
-            <Logo />
+            <LogoLight />
           </div>
+          <hr />
           <ul className="nav flex-column">
-            <li className="nav-item">
+          <li className={`nav-item ${location.pathname === "/dashboard" ? "activeNav" : ""}`}>
               <Link className="nav-link text-white" to="/dashboard">Dashboard</Link>
             </li>
-            <li className="nav-item">
+            <li className={`nav-item ${location.pathname === "/dashboard/expenses" ? "activeNav" : ""}`}>
               <Link className="nav-link text-white" to="/dashboard/expenses">Expenses</Link>
             </li>
-            <li className="nav-item">
+            <li className={`nav-item ${location.pathname === "/dashboard/income" ? "activeNav" : ""}`}>
               <Link className="nav-link text-white" to="/dashboard/income">Income</Link>
             </li>
           </ul>

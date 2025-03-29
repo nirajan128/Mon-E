@@ -128,7 +128,7 @@ export default function Expenses() {
 
       {/* Expenses Table */}
       <div className="container mt-4">
-        <table className="table table-bordered table-striped">
+        <table className="table table-bordered table-responsive table-hover table-striped">
           <thead className="thead-dark">
             <tr>
               <th>Date</th>
