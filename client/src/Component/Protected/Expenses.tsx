@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
 import PostForm from "../Shared/PostForm";
@@ -28,31 +28,31 @@ export default function Expenses() {
   const [tableMonthFilter, setTableMonthFilter] = useState<string>("All");
 
   // Fetch expenses from backend
-  useEffect(() => {
+  // Fetch income data
+  const fetchExpenses = useCallback(async () => {
     if (!token) {
       logout();
       return;
     }
+    try {
+      const response = await axios.get<Expense[]>(`${API_BASE_URL}/valid/expenses`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const fetchExpenses = async () => {
-      try {
-        const response = await axios.get<Expense[]>(`${API_BASE_URL}/valid/expenses`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        
-        const formattedExpenses = response.data.map(expense => ({
-          ...expense,
-          amount: Number(expense.amount),
-        }));
-        setExpenses(formattedExpenses);
-      } catch (error) {
-        console.error("Failed to fetch expenses:", error);
-        logout();
-      }
-    };
-
-    fetchExpenses();
+      const formattedExpenses = response.data.map(expense => ({
+        ...expense,
+        amount: Number(expense.amount),
+      }));
+      setExpenses(formattedExpenses);
+    } catch (error) {
+      console.error("Failed to fetch income:", error);
+      logout();
+    }
   }, [token, logout]);
+
+  useEffect(() => {
+    fetchExpenses();
+  }, [fetchExpenses]);
 
   // Calculate total expenses and category totals (based on header filter)
   useEffect(() => {
@@ -124,7 +124,14 @@ export default function Expenses() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
-        <PostForm title="Expense"/>
+        <PostForm   title="Expenses" columns={
+    expenses.length > 0
+      ? Object.keys(expenses[0]).filter(
+          (key) => !["expense_id", "id"].includes(key)
+        )
+      : []
+  }
+  onSuccess={fetchExpenses}/>
       </div>
 
       {/* Expenses Table */}

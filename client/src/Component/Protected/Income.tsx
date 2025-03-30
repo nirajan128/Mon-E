@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
 import PostForm from "../Shared/PostForm";
@@ -30,35 +30,36 @@ export default function Income() {
   const [tableMonthFilter, setTableMonthFilter] = useState<string>("All");
   
   // Fetch expenses from backend
-  useEffect(() => {
+
+  // Fetch income data
+  const fetchIncome = useCallback(async () => {
     if (!token) {
-      logout(); // Ensure user is logged in
+      logout();
       return;
     }
+    try {
+      const response = await axios.get<Income[]>(`${API_BASE_URL}/valid/income`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const fetchIncome = async () => {
-      try {
-        const response = await axios.get<Income[]>(`${API_BASE_URL}/valid/income`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const formattedIncome = response.data.map((income) => ({
+        ...income,
+        amount: Number(income.amount),
+        Tax: Number(income.Tax),
+        CPP: Number(income.CPP),
+        EI: Number(income.EI),
+      }));
 
-        const formattedIncome = response.data.map(income => ({
-          ...income,
-          amount: Number(income.amount),
-          Tax: Number(income.Tax),
-          CPP: Number(income.CPP),
-          EI: Number(income.EI)
-        }));
-        setIncome(formattedIncome);
-        console.log(response.data)
-      } catch (error) {
-        console.error("Failed to fetch expenses:", error);
-        logout(); // Logout if unauthorized
-      }
-    };
-
-    fetchIncome();
+      setIncome(formattedIncome);
+    } catch (error) {
+      console.error("Failed to fetch income:", error);
+      logout();
+    }
   }, [token, logout]);
+
+  useEffect(() => {
+    fetchIncome();
+  }, [fetchIncome]);
 
     // Calculate total income and source totals (based on header filter)
     useEffect(() => {
@@ -126,7 +127,14 @@ export default function Income() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
-        <PostForm title="Income"/>
+        <PostForm title="Income" columns={
+    income.length > 0
+      ? Object.keys(income[0]).filter(
+          (key) => !["income_id", "id"].includes(key)
+        )
+      : []
+  }
+  onSuccess={fetchIncome}/>
       </div>
     <div className="container mt-4">
       <table className="table table-bordered  table-responsive table-striped">
