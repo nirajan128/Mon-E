@@ -173,6 +173,17 @@ table{
     color: var(--Navy);
 }
 
+.addButton{
+    background-color: var(--Beige);
+    border: 1px solid var(--Blue);
+    font-family: var(--workSans);
+}
+
+.addButton:hover{
+    background-color: var(--Blue);
+    color: var(--Beige);
+}
+
 /* Tablet styles */
 @media (min-width: 576px) {
     #logo {

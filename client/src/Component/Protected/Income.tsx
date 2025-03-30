@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
+import PostForm from "../Shared/PostForm";
 
 
 interface Income {
@@ -125,6 +126,7 @@ export default function Income() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
+        <PostForm title="Income"/>
       </div>
     <div className="container mt-4">
       <table className="table table-bordered  table-responsive table-striped">

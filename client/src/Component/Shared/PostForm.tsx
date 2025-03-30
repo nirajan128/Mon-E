@@ -1,9 +1,14 @@
-import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css";
-function PostForm(){
+/* import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"; */
+import "../../App.css"
+
+interface PostFormProps{
+    title: string;
+}
+function PostForm(props: PostFormProps){
 return <>
 
-<button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-<i className="fas fa-plus"></i> Add Income
+<button type="button" className="btn addButton" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<i className="fas fa-plus"></i> {props.title}
 </button>
 
 <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
+import PostForm from "../Shared/PostForm";
 import "../../App.css"
 
 interface Expense {
@@ -123,6 +124,7 @@ export default function Expenses() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
+        <PostForm title="Expense"/>
       </div>
 
       {/* Expenses Table */}
