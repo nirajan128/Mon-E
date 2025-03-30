@@ -133,11 +133,11 @@ route.get("/income", async (req: Request, res: Response) => {
 route.post("/income", async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        const { amount, source, description } = req.body;
+        const { amount, source, description,tax,cpp,el } = req.body;
 
         const result = await db.query(
-            "INSERT INTO moneincome (id, amount, source, description) VALUES ($1, $2, $3, $4) RETURNING *",
-            [userId, amount, source, description]
+            "INSERT INTO moneincome (id, amount, source, description, Tax, CPP, EI) VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *",
+            [userId, amount, source, description, tax,cpp,el]
         );
 
         res.status(201).json(result.rows[0]);
@@ -156,11 +156,11 @@ route.put("/income/:id", async (req: Request, res: Response, next: NextFunction)
     try {
         const userId = (req as any).user.id;
         const expenseId = req.params.id;
-        const { amount, source, description } = req.body;
+        const { amount, source, description, tax,cpp,el } = req.body;
 
         const result = await db.query(
-            "UPDATE moneincome SET amount = $1, source = $2, description = $3 WHERE income_id = $4 AND id = $5 RETURNING *",
-            [amount, source, description, expenseId, userId]
+            "UPDATE moneincome SET amount = $1, source = $2, description = $3, Tax=$4, CPP=$5, EI=$6 WHERE income_id = $7 AND id = $8 RETURNING *",
+            [amount, source, description,tax,cpp,el, expenseId, userId]
         );
 
         if (result.rowCount === 0) {

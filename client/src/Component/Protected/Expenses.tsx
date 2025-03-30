@@ -82,7 +82,6 @@ export default function Expenses() {
   return (
     <>
       <div>
-        <h1 className="expenseLabel">EXPENSES</h1>
         <div className="row headerRow align-items-center">
           <div className="col-md-5 text-center">
             <h1 className="totalExp">${totalExpenses}</h1>
