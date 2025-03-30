@@ -38,6 +38,8 @@ export default function Income() {
       return;
     }
     try {
+     
+
       const response = await axios.get<Income[]>(`${API_BASE_URL}/valid/income`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -51,6 +53,7 @@ export default function Income() {
       }));
 
       setIncome(formattedIncome);
+      
     } catch (error) {
       console.error("Failed to fetch income:", error);
       logout();
@@ -85,7 +88,7 @@ export default function Income() {
   const uniqueSource = Array.from(new Set(income.map(eachIncome => eachIncome.source)));
   const uniqueMonths = Array.from(new Set(income.map(eachIncome => eachIncome.date.split("-")[1])));
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
+  
   return (
     <div>
       <div>
@@ -127,13 +130,11 @@ export default function Income() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
-        <PostForm title="Income" columns={
-    income.length > 0
-      ? Object.keys(income[0]).filter(
-          (key) => !["income_id", "id"].includes(key)
-        )
-      : []
-  }
+        <PostForm title="Income" columns={["date", "source", "amount", "description", "Tax", "CPP", "EI"]}
+
+
+
+
   onSuccess={fetchIncome}/>
       </div>
     <div className="container mt-4">

@@ -9,6 +9,9 @@ interface PostFormProps {
 }
 
 function PostForm({ title, columns,onSuccess }: PostFormProps) {
+    console.log("Rendering PostForm with title:", title);
+    console.log(columns)
+
   const { token } = useAuth();
   const [formData, setFormData] = useState<Record<string, string | number>>({});
 
