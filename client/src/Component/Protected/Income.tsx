@@ -10,9 +10,9 @@ interface Income {
   source: string;
   description: string;
   amount: number;
-  Tax: number;
-  CPP: number;
-  EI: number;
+  tax: number;
+  cpp: number;
+  ei: number;
 }
 
 export default function Income() {
@@ -47,9 +47,9 @@ export default function Income() {
       const formattedIncome = response.data.map((income) => ({
         ...income,
         amount: Number(income.amount),
-        Tax: Number(income.Tax),
-        CPP: Number(income.CPP),
-        EI: Number(income.EI),
+        Tax: Number(income.tax),
+        CPP: Number(income.cpp),
+        EI: Number(income.ei),
       }));
 
       setIncome(formattedIncome);
@@ -71,9 +71,9 @@ export default function Income() {
       const total = filteredIncome.reduce((sum, income) => sum + income.amount, 0);
       setTotalIncome(total);
   
-      const taxTotal = filteredIncome.reduce((sum, income) => sum + income.Tax, 0);
-      const cppTotal = filteredIncome.reduce((sum, income) => sum + income.CPP, 0);
-      const eiTotal = filteredIncome.reduce((sum, income) => sum + income.EI, 0);
+      const taxTotal = filteredIncome.reduce((sum, income) => sum + income.tax, 0);
+      const cppTotal = filteredIncome.reduce((sum, income) => sum + income.cpp, 0);
+      const eiTotal = filteredIncome.reduce((sum, income) => sum + income.ei, 0);
       setTotals({ Tax: taxTotal, CPP: cppTotal, EI: eiTotal });
     }, [income, headerMonthFilter]);
   
@@ -130,7 +130,7 @@ export default function Income() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
-        <PostForm title="Income" columns={["date", "source", "amount", "description", "Tax", "CPP", "EI"]}
+        <PostForm title="Income" columns={["date", "source", "amount", "description", "tax", "cpp", "ei"]}
 
 
 
@@ -159,9 +159,9 @@ export default function Income() {
                   <td>{eachIncome.source}</td>
                   <td>{eachIncome.amount}</td>
                   <td>{eachIncome.description}</td>
-                  <td>{eachIncome.Tax}</td>
-                  <td>{eachIncome.CPP}</td>
-                  <td>{eachIncome.EI}</td>
+                  <td>{eachIncome.tax}</td>
+                  <td>{eachIncome.cpp}</td>
+                  <td>{eachIncome.ei}</td>
                 </tr>
               ))
             ) : (

@@ -133,11 +133,11 @@ route.get("/income", async (req: Request, res: Response) => {
 route.post("/income", async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        const { amount, source, description,Tax,cpp,el } = req.body;
+        const { amount, source, description,tax,cpp,el } = req.body;
 
         const result = await db.query(
-            "INSERT INTO moneincome (id, amount, source, description, Tax, CPP, EI) VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *",
-            [userId, amount, source, description, Tax,cpp,el]
+            "INSERT INTO moneincome (id, amount, source, description, tax, cpp, ei) VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *",
+            [userId, amount, source, description, tax,cpp,el]
         );
 
         res.status(201).json(result.rows[0]);
