@@ -73,7 +73,7 @@ function PostForm({ title, columns,onSuccess }: PostFormProps) {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
+              <h1 className="modal-title fs-5 modalLabel" id="exampleModalLabel">
                 Add {title}
               </h1>
               <button
@@ -83,20 +83,25 @@ function PostForm({ title, columns,onSuccess }: PostFormProps) {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body">
+            <div className="modal-body postForm">
               <form>
-                {columns.map((column, index) => (
-                  <div key={index} className="mb-3">
-                    <label className="form-label">{column}</label>
-                    <input
-                      type="text"
-                      name={column}
-                      className="form-control"
-                      value={formData[column] || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
-                ))}
+                <div className="form-grid row justify-content-center">
+                  {columns.map((column, index) => {
+                    const isDateField = column.toLowerCase().includes("date");
+                    return (
+                      <div key={index} className="form-group col-auto mt-1">
+                        <label className="form-label-sm formLabel">{column}</label>
+                        <input
+                          type={isDateField ? "datetime-local" : "text"} // Set date type dynamically
+                          name={column}
+                          className="form-control-sm formInput"
+                          value={formData[column] || ""}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               </form>
             </div>
             <div className="modal-footer">

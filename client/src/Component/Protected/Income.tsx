@@ -130,7 +130,7 @@ export default function Income() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
-        <PostForm title="Income" columns={["date", "source", "amount", "description", "tax", "cpp", "ei"]}
+        <PostForm title="Income" columns={[ "source", "amount", "description", "tax", "cpp", "ei", "date"]}
 
 
 
@@ -138,7 +138,7 @@ export default function Income() {
   onSuccess={fetchIncome}/>
       </div>
     <div className="container mt-4">
-      <table className="table table-bordered  table-responsive table-striped">
+      <table className="table table-bordered table-responsive table-hover table-striped">
         <thead className="thead-dark">
           <tr>
             <th>Date</th>

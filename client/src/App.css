@@ -184,6 +184,26 @@ table{
     color: var(--Beige);
 }
 
+.postForm{
+    background-color: var(--LightBeige);
+}
+
+.formInput{
+    border: 1px solid var(--Blue) !important;
+}
+
+ .modalLabel{
+    font-family: var(--openSans);
+    color: var(--Navy);
+    text-transform: uppercase;
+}
+
+.formLabel{
+    font-family: var(--openSans);
+    color: var(--Blue);
+    text-transform: uppercase;
+}
+
 /* Tablet styles */
 @media (min-width: 576px) {
     #logo {

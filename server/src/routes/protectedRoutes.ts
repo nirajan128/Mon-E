@@ -42,11 +42,11 @@ route.get("/expenses", async (req: Request, res: Response) => {
 route.post("/expenses", async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        const { amount, category, description,paymentType } = req.body;
+        const { amount, category, description,paymentType,date } = req.body;
 
         const result = await db.query(
-            "INSERT INTO moneexpenses (id, amount, category, description, payment_type) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-            [userId, amount, category, description, paymentType]
+            "INSERT INTO moneexpenses (id, amount, category, description, payment_type, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+            [userId, amount, category, description, paymentType, date]
         );
 
         res.status(201).json(result.rows[0]);
@@ -133,11 +133,11 @@ route.get("/income", async (req: Request, res: Response) => {
 route.post("/income", async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        const { amount, source, description,tax,cpp,el } = req.body;
+        const { amount, source, description,tax,cpp,el,date } = req.body;
 
         const result = await db.query(
-            "INSERT INTO moneincome (id, amount, source, description, tax, cpp, ei) VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *",
-            [userId, amount, source, description, tax,cpp,el]
+            "INSERT INTO moneincome (id, amount, source, description, tax, cpp, ei,date) VALUES ($1, $2, $3, $4, $5,$6,$7,$8) RETURNING *",
+            [userId, amount, source, description, tax,cpp,el,date]
         );
 
         res.status(201).json(result.rows[0]);

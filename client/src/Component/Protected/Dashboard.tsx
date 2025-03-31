@@ -81,7 +81,7 @@ export default function Dashboard() {
       {/* Main Row (Sidebar + Content) */}
       <div className="row">
         {/* Sidebar (Visible Only on Large Screens) */}
-        <nav className="col-md-3 col-lg-2 d-none d-md-block dashNav text-white p-3 vh-100">
+        <nav className="col-md-3 col-lg-2 d-none d-md-block dashNav text-white">
           <div className="text-center mb-3">
             <LogoLight />
           </div>
