@@ -144,6 +144,7 @@ export default function Expenses() {
               <th>Amount ($)</th>
               <th>Description</th>
               <th>Payment Type</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -155,6 +156,10 @@ export default function Expenses() {
                   <td>{expense.amount}</td>
                   <td>{expense.description}</td>
                   <td>{expense.paymentType}</td>
+                  <td>
+                  <i className="fas fa-pencil mx-2"></i>
+                  <i className="fas fa-trash mx-2"></i>
+                  </td>
                 </tr>
               ))
             ) : (
