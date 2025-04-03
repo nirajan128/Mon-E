@@ -3,6 +3,8 @@ import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
 import PostForm from "../Shared/PostForm";
 import "../../App.css"
+import { EditModal } from "../Shared/EditFOrmModal";
+import { DeleteModal } from "../Shared/DeleteModal";
 
 interface Expense {
   id: number;
@@ -19,6 +21,7 @@ export default function Expenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [totalExpenses, setTotalExpenses] = useState<number>(0);
   const [categoryTotals, setCategoryTotals] = useState<{ [key: string]: number }>({});
+  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
 
   // Filters for header
   const [headerMonthFilter, setHeaderMonthFilter] = useState<string>("All");
@@ -157,8 +160,18 @@ export default function Expenses() {
                   <td>{expense.description}</td>
                   <td>{expense.paymentType}</td>
                   <td>
-                  <i className="fas fa-pencil mx-2"></i>
-                  <i className="fas fa-trash mx-2"></i>
+                  <i 
+                      className="fas fa-pencil mx-2 text-warning" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#editModal"
+                      onClick={() => setSelectedExpense(expense)}
+                    ></i>
+                    <i 
+                      className="fas fa-trash mx-2 text-danger" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#deleteModal"
+                      onClick={() => setSelectedExpense(expense)}
+                    ></i>
                   </td>
                 </tr>
               ))
@@ -170,6 +183,32 @@ export default function Expenses() {
           </tbody>
         </table>
       </div>
+      {/* Edit Modal */}
+      {selectedExpense && (
+        <EditModal
+          title="Expenses"
+          columns={["date", "category", "amount", "description", "paymentType"]}
+          data={selectedExpense}
+          onSuccess={() => {
+            fetchExpenses();
+            setSelectedExpense(null);
+            location.reload();
+          }}
+        />
+      )}
+
+      {/* Delete Modal */}
+      {selectedExpense && (
+        <DeleteModal
+          title="Expenses"
+          dataId={selectedExpense.id}
+          onSuccess={() => {
+            fetchExpenses();
+            setSelectedExpense(null);
+          }}
+        />
+      )}
+
     </>
   );
 }
