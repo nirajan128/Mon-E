@@ -183,13 +183,13 @@ export default function Income() {
 
       {selectedIncome && (
         <EditModal
-          title="income"
+          title="Income"
           columns={["date", "source", "amount", "description", "tax", "cpp", "ei"]}
           data={selectedIncome}
           onSuccess={() => {
             fetchIncome();
             setSelectedIncome(null);
-            location.reload();
+             location.reload();
           }}
           incomeExpenseId={selectedIncome.income_id}
         />

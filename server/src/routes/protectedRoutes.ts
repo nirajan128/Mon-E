@@ -42,11 +42,11 @@ route.get("/expenses", async (req: Request, res: Response) => {
 route.post("/expenses", async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        const { amount, category, description,paymentType,date } = req.body;
+        const { amount, category, description,payment_type,date } = req.body;
 
         const result = await db.query(
             "INSERT INTO moneexpenses (id, amount, category, description, payment_type, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-            [userId, amount, category, description, paymentType, date]
+            [userId, amount, category, description, payment_type, date]
         );
 
         res.status(201).json(result.rows[0]);
@@ -65,11 +65,11 @@ route.put("/expenses/:id", async (req: Request, res: Response, next: NextFunctio
     try {
         const userId = (req as any).user.id;
         const expenseId = req.params.id;
-        const { amount, category, description, paymentType } = req.body;
+        const { amount, category, description, payment_type } = req.body;
 
         const result = await db.query(
             "UPDATE moneexpenses SET amount = $1, category = $2, description = $3, payment_type = $4 WHERE expense_id = $5 AND id = $6 RETURNING *",
-            [amount, category, description,paymentType, expenseId, userId]
+            [amount, category, description,payment_type, expenseId, userId]
         );
 
         if (result.rowCount === 0) {
@@ -133,11 +133,11 @@ route.get("/income", async (req: Request, res: Response) => {
 route.post("/income", async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        const { amount, source, description,tax,cpp,el,date } = req.body;
+        const { amount, source, description,tax,cpp,ei,date } = req.body;
 
         const result = await db.query(
             "INSERT INTO moneincome (id, amount, source, description, tax, cpp, ei,date) VALUES ($1, $2, $3, $4, $5,$6,$7,$8) RETURNING *",
-            [userId, amount, source, description, tax,cpp,el,date]
+            [userId, amount, source, description, tax,cpp,ei,date]
         );
 
         res.status(201).json(result.rows[0]);
@@ -156,11 +156,11 @@ route.put("/income/:id", async (req: Request, res: Response, next: NextFunction)
     try {
         const userId = (req as any).user.id;
         const expenseId = req.params.id;
-        const { amount, source, description, tax,cpp,el } = req.body;
+        const { amount, source, description, tax,cpp,ei } = req.body;
 
         const result = await db.query(
-            "UPDATE moneincome SET amount = $1, source = $2, description = $3, Tax=$4, CPP=$5, EI=$6 WHERE income_id = $7 AND id = $8 RETURNING *",
-            [amount, source, description,tax,cpp,el, expenseId, userId]
+            "UPDATE moneincome SET amount = $1, source = $2, description = $3, tax=$4, cpp=$5, ei=$6 WHERE income_id = $7 AND id = $8 RETURNING *",
+            [amount, source, description,tax,cpp,ei, expenseId, userId]
         );
 
         if (result.rowCount === 0) {

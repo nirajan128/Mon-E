@@ -13,7 +13,7 @@ interface Expense {
   category: string;
   description: string;
   amount: number;
-  paymentType: string;
+  payment_type: string;
 }
 
 export default function Expenses() {
@@ -96,7 +96,7 @@ export default function Expenses() {
               {Object.entries(categoryTotals).map(([category, total]) => (
                 <div key={category} className="category-box m-2 p-3">
                   <strong>{category}</strong><br />
-                  <span>${total}</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -133,7 +133,7 @@ export default function Expenses() {
       ? Object.keys(expenses[0]).filter(
           (key) => !["expense_id", "id"].includes(key)
         )
-      : []
+      : ["date", "category", "amount", "description", "payment_type"]
   }
   onSuccess={fetchExpenses}/>
       </div>
@@ -159,7 +159,7 @@ export default function Expenses() {
                   <td>{expense.category}</td>
                   <td>{expense.amount}</td>
                   <td>{expense.description}</td>
-                  <td>{expense.paymentType}</td>
+                  <td>{expense.payment_type}</td>
                   <td>
                     <button onClick={() => setSelectedExpense(expense)} className="border border-0">
                     <i 
@@ -191,7 +191,7 @@ export default function Expenses() {
       {/* Edit Modal */}
       {selectedExpense && (
         <EditModal
-          title="expenses"
+          title="Expenses"
           columns={["date", "category", "amount", "description", "paymentType"]}
           data={selectedExpense}
           onSuccess={() => {
