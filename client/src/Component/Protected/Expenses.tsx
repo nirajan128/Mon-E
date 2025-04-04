@@ -160,18 +160,22 @@ export default function Expenses() {
                   <td>{expense.description}</td>
                   <td>{expense.paymentType}</td>
                   <td>
-                  <i 
+                    <button onClick={() => setSelectedExpense(expense)} className="border border-0">
+                    <i 
                       className="fas fa-pencil mx-2 text-warning" 
                       data-bs-toggle="modal" 
                       data-bs-target="#editModal"
-                      onClick={() => setSelectedExpense(expense)}
                     ></i>
-                    <i 
+                    </button>
+                  
+                  <button onClick={() => setSelectedExpense(expense)} className="border border-0">
+                  <i 
                       className="fas fa-trash mx-2 text-danger" 
                       data-bs-toggle="modal" 
                       data-bs-target="#deleteModal"
-                      onClick={() => setSelectedExpense(expense)}
                     ></i>
+                  </button>
+                    
                   </td>
                 </tr>
               ))
@@ -201,10 +205,11 @@ export default function Expenses() {
       {selectedExpense && (
         <DeleteModal
           title="Expenses"
-          dataId={selectedExpense.id}
+          data={selectedExpense}
           onSuccess={() => {
             fetchExpenses();
             setSelectedExpense(null);
+            location.reload();
           }}
         />
       )}

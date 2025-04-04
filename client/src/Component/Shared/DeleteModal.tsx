@@ -4,11 +4,11 @@ import { useAuth } from "../../Context/AuthContext";
 
 interface ModalProps {
   title: "Income" | "Expenses";
-  dataId: number; // Existing data for editing
+  data: Record<string, any>; // Existing data for editing
   onSuccess: () => void;
 }
 
-export function DeleteModal({ title, dataId, onSuccess }: ModalProps) {
+export function DeleteModal({ title, data, onSuccess }: ModalProps) {
     const { token } = useAuth();
 
     const handleDelete = async () => {
@@ -18,7 +18,7 @@ export function DeleteModal({ title, dataId, onSuccess }: ModalProps) {
       }
   
       try {
-        const response = await fetch(`http://localhost:5000/valid/${title.toLowerCase()}/${dataId}`, {
+        const response = await fetch(`http://localhost:5000/valid/${title.toLowerCase()}/${data.expense_id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
