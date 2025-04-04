@@ -3,13 +3,15 @@ import "../../App.css";
 import { useAuth } from "../../Context/AuthContext";
 
 interface ModalProps {
-  title: "Income" | "Expenses";
+  title: string;
   columns: string[];
   data: Record<string, any>; // Existing data for editing
   onSuccess: () => void;
+  incomeExpenseId: number
+
 }
 
-export function EditModal({ title, columns, data, onSuccess }: ModalProps) {
+export function EditModal({ title, columns, data, onSuccess, incomeExpenseId }: ModalProps) {
   const { token } = useAuth();
   const [formData, setFormData] = useState(data);
 
@@ -29,7 +31,8 @@ export function EditModal({ title, columns, data, onSuccess }: ModalProps) {
 
     try {
       // Use correct endpoint for updating expenses
-      const response = await fetch(`http://localhost:5000/valid/expenses/${data.expense_id}`, {
+  
+      const response = await fetch(`http://localhost:5000/valid/${title}/${data.expense_id || data.income_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

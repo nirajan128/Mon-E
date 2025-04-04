@@ -9,6 +9,7 @@ import { DeleteModal } from "../Shared/DeleteModal";
 interface Expense {
   id: number;
   date: string;
+  expense_id:number;
   category: string;
   description: string;
   amount: number;
@@ -190,7 +191,7 @@ export default function Expenses() {
       {/* Edit Modal */}
       {selectedExpense && (
         <EditModal
-          title="Expenses"
+          title="expenses"
           columns={["date", "category", "amount", "description", "paymentType"]}
           data={selectedExpense}
           onSuccess={() => {
@@ -198,6 +199,7 @@ export default function Expenses() {
             setSelectedExpense(null);
             location.reload();
           }}
+          incomeExpenseId={selectedExpense.expense_id}
         />
       )}
 

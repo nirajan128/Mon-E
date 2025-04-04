@@ -2,12 +2,14 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
 import PostForm from "../Shared/PostForm";
-
+import { DeleteModal } from "../Shared/DeleteModal";
+import { EditModal } from "../Shared/EditFOrmModal";
 
 interface Income {
   id: number;
   date: string;
   source: string;
+  income_id: number;
   description: string;
   amount: number;
   tax: number;
@@ -16,44 +18,38 @@ interface Income {
 }
 
 export default function Income() {
-  const API_BASE_URL = "http://localhost:5000"; // Your backend URL
+  const API_BASE_URL = "http://localhost:5000";
   const { token, logout } = useAuth();
   const [income, setIncome] = useState<Income[]>([]);
   const [totalIncome, setTotalIncome] = useState<number>(0);
   const [totals, setTotals] = useState<{ Tax: number; CPP: number; EI: number }>({ Tax: 0, CPP: 0, EI: 0 });
 
-  // Filters for header
   const [headerMonthFilter, setHeaderMonthFilter] = useState<string>("All");
-  
-  // Filters for table
   const [tableSourceFilter, setTableSourceFilter] = useState<string>("All");
   const [tableMonthFilter, setTableMonthFilter] = useState<string>("All");
-  
-  // Fetch expenses from backend
 
-  // Fetch income data
+  const [selectedIncome, setSelectedIncome] = useState<Income | null>(null);
+
   const fetchIncome = useCallback(async () => {
     if (!token) {
       logout();
       return;
     }
-    try {
-     
 
+    try {
       const response = await axios.get<Income[]>(`${API_BASE_URL}/valid/income`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const formattedIncome = response.data.map((income) => ({
-        ...income,
-        amount: Number(income.amount),
-        Tax: Number(income.tax),
-        CPP: Number(income.cpp),
-        EI: Number(income.ei),
+      const formattedIncome = response.data.map((inc) => ({
+        ...inc,
+        amount: Number(inc.amount),
+        tax: Number(inc.tax),
+        cpp: Number(inc.cpp),
+        ei: Number(inc.ei),
       }));
 
       setIncome(formattedIncome);
-      
     } catch (error) {
       console.error("Failed to fetch income:", error);
       logout();
@@ -64,31 +60,35 @@ export default function Income() {
     fetchIncome();
   }, [fetchIncome]);
 
-    // Calculate total income and source totals (based on header filter)
-    useEffect(() => {
-      const filteredIncome = headerMonthFilter === "All" ? income : income.filter(income => income.date.includes(`-${headerMonthFilter}-`));
-  
-      const total = filteredIncome.reduce((sum, income) => sum + income.amount, 0);
-      setTotalIncome(total);
-  
-      const taxTotal = filteredIncome.reduce((sum, income) => sum + income.tax, 0);
-      const cppTotal = filteredIncome.reduce((sum, income) => sum + income.cpp, 0);
-      const eiTotal = filteredIncome.reduce((sum, income) => sum + income.ei, 0);
-      setTotals({ Tax: taxTotal, CPP: cppTotal, EI: eiTotal });
-    }, [income, headerMonthFilter]);
-  
-    // Filter expenses for table display
-    const filteredTableIncome = income.filter((income) => {
-      const categoryMatch = tableSourceFilter === "All" || income.source === tableSourceFilter;
-      const monthMatch = tableMonthFilter === "All" || income.date.includes(`-${tableMonthFilter}-`);
-      return categoryMatch && monthMatch;
-    });
+  useEffect(() => {
+    const filteredIncome =
+      headerMonthFilter === "All"
+        ? income
+        : income.filter((inc) => inc.date.includes(`-${headerMonthFilter}-`));
 
-    // Extract unique months and categories
-  const uniqueSource = Array.from(new Set(income.map(eachIncome => eachIncome.source)));
-  const uniqueMonths = Array.from(new Set(income.map(eachIncome => eachIncome.date.split("-")[1])));
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  
+    const total = filteredIncome.reduce((sum, inc) => sum + inc.amount, 0);
+    setTotalIncome(total);
+
+    const taxTotal = filteredIncome.reduce((sum, inc) => sum + inc.tax, 0);
+    const cppTotal = filteredIncome.reduce((sum, inc) => sum + inc.cpp, 0);
+    const eiTotal = filteredIncome.reduce((sum, inc) => sum + inc.ei, 0);
+
+    setTotals({ Tax: taxTotal, CPP: cppTotal, EI: eiTotal });
+  }, [income, headerMonthFilter]);
+
+  const filteredTableIncome = income.filter((inc) => {
+    const sourceMatch = tableSourceFilter === "All" || inc.source === tableSourceFilter;
+    const monthMatch = tableMonthFilter === "All" || inc.date.includes(`-${tableMonthFilter}-`);
+    return sourceMatch && monthMatch;
+  });
+
+  const uniqueSource = Array.from(new Set(income.map((inc) => inc.source)));
+  const uniqueMonths = Array.from(new Set(income.map((inc) => inc.date.split("-")[1])));
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
   return (
     <div>
       <div>
@@ -99,9 +99,9 @@ export default function Income() {
           </div>
           <div className="col-md-5">
             <div className="p-2 d-flex justify-content-center flex-wrap taxes">
-            <div className="category-box m-2 p-3 category-box"><strong>Tax</strong><br /><span>${totals.Tax}</span></div>
-            <div className="category-box m-2 p-3 category-box"><strong>CPP</strong><br /><span>${totals.CPP}</span></div>
-            <div className="category-box m-2 p-3 category-box"><strong>EI</strong><br /><span>${totals.EI}</span></div>
+              <div className="category-box m-2 p-3"><strong>Tax</strong><br /><span>${totals.Tax}</span></div>
+              <div className="category-box m-2 p-3"><strong>CPP</strong><br /><span>${totals.CPP}</span></div>
+              <div className="category-box m-2 p-3"><strong>EI</strong><br /><span>${totals.EI}</span></div>
             </div>
           </div>
           <div className="col-md-2 text-center">
@@ -116,12 +116,12 @@ export default function Income() {
       </div>
 
       <hr />
-      {/* Table Filters */}
+
       <div className="filters mt-4 d-flex">
         <select className="form-control form-select" value={tableSourceFilter} onChange={(e) => setTableSourceFilter(e.target.value)}>
           <option value="All">All Categories</option>
-          {uniqueSource.map((eachSources, index) => (
-            <option key={index} value={eachSources}>{eachSources}</option>
+          {uniqueSource.map((src, index) => (
+            <option key={index} value={src}>{src}</option>
           ))}
         </select>
         <select className="form-control form-select mx-3" value={tableMonthFilter} onChange={(e) => setTableMonthFilter(e.target.value)}>
@@ -130,48 +130,82 @@ export default function Income() {
             <option key={index} value={month}>{monthNames[parseInt(month) - 1]}</option>
           ))}
         </select>
-        <PostForm title="Income" columns={[ "source", "amount", "description", "tax", "cpp", "ei", "date"]}
-
-
-
-
-  onSuccess={fetchIncome}/>
+        <PostForm
+          title="Income"
+          columns={["source", "amount", "description", "tax", "cpp", "ei", "date"]}
+          onSuccess={fetchIncome}
+        />
       </div>
-    <div className="container mt-4">
-      <table className="table table-bordered table-responsive table-hover table-striped">
-        <thead className="thead-dark">
-          <tr>
-            <th>Date</th>
-            <th>Source</th>
-            <th>Amount ($)</th>
-            <th>Description</th>
-            <th>Tax</th>
-            <th>CPP</th>
-            <th>EI</th>
-  
-          </tr>
-        </thead>
-        <tbody>
-        {filteredTableIncome.length > 0 ? (
-              filteredTableIncome.map((eachIncome) => (
-                <tr key={eachIncome.id}>
-                  <td>{eachIncome.date.split("T")[0]}</td>
-                  <td>{eachIncome.source}</td>
-                  <td>{eachIncome.amount}</td>
-                  <td>{eachIncome.description}</td>
-                  <td>{eachIncome.tax}</td>
-                  <td>{eachIncome.cpp}</td>
-                  <td>{eachIncome.ei}</td>
+
+      <div className="container mt-4">
+        <table className="table table-bordered table-responsive table-hover table-striped">
+          <thead className="thead-dark">
+            <tr>
+              <th>Date</th>
+              <th>Source</th>
+              <th>Amount ($)</th>
+              <th>Description</th>
+              <th>Tax</th>
+              <th>CPP</th>
+              <th>EI</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTableIncome.length > 0 ? (
+              filteredTableIncome.map((inc) => (
+                <tr key={inc.id}>
+                  <td>{inc.date.split("T")[0]}</td>
+                  <td>{inc.source}</td>
+                  <td>{inc.amount}</td>
+                  <td>{inc.description}</td>
+                  <td>{inc.tax}</td>
+                  <td>{inc.cpp}</td>
+                  <td>{inc.ei}</td>
+                  <td>
+                    <button onClick={() => setSelectedIncome(inc)} className="border border-0">
+                      <i className="fas fa-pencil mx-2 text-warning" data-bs-toggle="modal" data-bs-target="#editModal"></i>
+                    </button>
+                    <button onClick={() => setSelectedIncome(inc)} className="border border-0">
+                      <i className="fas fa-trash mx-2 text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"></i>
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="text-center">No expenses found</td>
+                <td colSpan={8} className="text-center">No income entries found</td>
               </tr>
             )}
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
+
+      {selectedIncome && (
+        <EditModal
+          title="income"
+          columns={["date", "source", "amount", "description", "tax", "cpp", "ei"]}
+          data={selectedIncome}
+          onSuccess={() => {
+            fetchIncome();
+            setSelectedIncome(null);
+            location.reload();
+          }}
+          incomeExpenseId={selectedIncome.income_id}
+        />
+      )}
+
+      {selectedIncome && (
+        <DeleteModal
+          title="Income"
+          data={selectedIncome}
+          onSuccess={() => {
+            fetchIncome();
+            setSelectedIncome(null);
+            location.reload();
+          }}
+        />
+      )}
     </div>
   );
 }
