@@ -86,7 +86,7 @@ export default function Expenses() {
 
   return (
     <>
-      <div>
+      <div className="mt-3">
         <div className="row headerRow align-items-center">
           <div className="col-md-5 text-center">
             <h1 className="totalExp">${totalExpenses}</h1>

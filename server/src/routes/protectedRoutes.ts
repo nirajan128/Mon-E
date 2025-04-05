@@ -14,10 +14,24 @@ const route = Router();
 // Middleware: Requires authentication (JWT or Google OAuth)
 route.use(jwtAuthenticator, isAuthenticated);
 
-route.get("/dashboard", (req:Request, res:Response, next:NextFunction) => {
-    const validUser = (req as any).user;
-    /* console.log(validUser); */
-     res.json(validUser);
+route.get("/dashboard", async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const validUser = (req as any).user;
+        const userId = validUser.id;
+
+        const expenseResult = await db.query("SELECT * FROM moneexpenses WHERE id = $1", [userId]);
+        const incomeResult = await db.query("SELECT * FROM moneincome WHERE id = $1", [userId]);
+
+        res.json({
+            user: validUser,
+            expenses: expenseResult.rows, // assuming you're using pg and want rows only
+            income: incomeResult.rows
+        });
+    } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        res.status(500).json({ message: "Server error", error });
+    }
+
 });
 
 /**

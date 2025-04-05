@@ -81,15 +81,62 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .dashNav{
-    background-color: var(--Blue)
+position: sticky;
+  top: 0;
+  z-index: 1050;
 }
 
-.nav-item:hover{
-    background-color: var(--Navy);
+
+/* Default Nav Link Style */
+.nav-link {
+    position: relative;
+    color: var(--Navy); /* Default text color is blue */
+    font-weight: bold;
+    font-family: var(--roboto);
+    text-decoration: none;
+    padding-bottom: 4px;
+    transition: color 0.3s ease;
+
+}
+
+/* Underline Animation */
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--Navy); /* Underline color (blue by default) */
+    transition: width 0.3s ease;
+}
+
+/* Hover State: Full Underline and Maintain Text Color (Blue) */
+.nav-link:hover {
+    color: var(--Navy); /* Keep text color blue on hover */
+}
+
+.nav-link:hover::after {
+    width: 100%; /* Show underline on hover */
+}
+
+/* Active State: Maintain Blue Text and Underline */
+.nav-link.activeNav {
+    color: var(--Navy); /* Keep text color blue when active */
+}
+
+.nav-link.activeNav::after {
+    width: 100%; /* Ensure underline is visible */
+    background-color: var(--Navy); /* Underline stays blue when active */
+}
+
+/* Bottom Box Shadow for Navigation */
+nav {
+    box-shadow: 0 4px 6px var(--LightBeige); /* Adds a soft bottom shadow */
 }
 
 .activeNav{
-    background-color: var(--Navy);
+    color: var(--Navy);
 }
 
 .slogan h4 {
@@ -283,6 +330,13 @@ table{
     .r3 {
         top: -5em;
         right: 0.5em;
+    }
+
+    .fixedNav{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
     }
 }
 

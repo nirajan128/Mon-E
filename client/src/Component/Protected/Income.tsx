@@ -90,9 +90,8 @@ export default function Income() {
   ];
 
   return (
-    <div>
+    <div className="mt-3">
       <div>
-        <h1 className="expenseLabel">INCOME</h1>
         <div className="row headerRow align-items-center">
           <div className="col-md-5 text-center">
             <h1 className="totalExp">${totalIncome}</h1>
