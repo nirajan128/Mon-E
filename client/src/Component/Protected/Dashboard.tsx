@@ -14,10 +14,22 @@ interface UserData {
   email: string;
 }
 
+interface IncomeExpense {
+  amount: number;
+  // include other fields if needed
+}
+
+interface DashboardResponse {
+  user: UserData;
+  income: IncomeExpense[];
+  expenses: IncomeExpense[];
+}
 export default function Dashboard() {
   const API_BASE_URL = "http://localhost:5000";
   const { token, logout } = useAuth();
   const [user, setUser] = useState<UserData | null>(null);
+  const [totalIncome, setTotalIncome] = useState<number>(0);
+  const [totalExpenses, setTotalExpenses] = useState<number>(0);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,10 +42,16 @@ export default function Dashboard() {
 
     const fetchUser = async () => {
       try {
-        const response = await axios.get<UserData>(`${API_BASE_URL}/valid/dashboard`, {
+        const response = await axios.get<DashboardResponse>(`${API_BASE_URL}/valid/dashboard`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(response.data);
+        setUser(response.data.user);
+
+    const totalIncome = response.data.income.reduce((sum, item) => sum + item.amount, 0);
+    const totalExpenses = response.data.expenses.reduce((sum, item) => sum + item.amount, 0);
+
+    setTotalIncome(totalIncome);
+    setTotalExpenses(totalExpenses);
       } catch (error) {
         console.error("Auth problem:", error);
         logout();
@@ -94,9 +112,15 @@ export default function Dashboard() {
               <p>Loading user data...</p>
             )}
           </div>
+          
         ) : (
           <Outlet />
         )}
+
+        <div>
+          <h2>{totalIncome}</h2>
+          <h2>{totalExpenses}</h2>
+        </div>
       </main>
     </div>
   );
