@@ -86,6 +86,10 @@ position: sticky;
   z-index: 1050;
 }
 
+main{
+    background-color: var(--Beige);
+}
+
 
 /* Default Nav Link Style */
 .nav-link {

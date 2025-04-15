@@ -21,11 +21,31 @@ route.get("/dashboard", async (req:Request, res:Response, next:NextFunction) => 
 
         const expenseResult = await db.query("SELECT * FROM moneexpenses WHERE id = $1", [userId]);
         const incomeResult = await db.query("SELECT * FROM moneincome WHERE id = $1", [userId]);
+        const monthlyIncomeQuery = `
+  SELECT DATE_TRUNC('month', date) AS month, SUM(amount) AS total
+  FROM moneincome
+  WHERE id = $1
+  GROUP BY month
+  ORDER BY month;
+`;
+
+const monthlyExpenseQuery = `
+  SELECT DATE_TRUNC('month', date) AS month, SUM(amount) AS total
+  FROM moneexpenses
+  WHERE id = $1
+  GROUP BY month
+  ORDER BY month;
+`;
+
+const incomeMonthly = await db.query(monthlyIncomeQuery, [userId]);
+const expenseMonthly = await db.query(monthlyExpenseQuery, [userId]);
 
         res.json({
             user: validUser,
             expenses: expenseResult.rows, // assuming you're using pg and want rows only
-            income: incomeResult.rows
+            income: incomeResult.rows,
+            incomeMonthly: incomeMonthly.rows,
+            expenseMonthly: expenseMonthly.rows
         });
     } catch (error) {
         console.error("Error fetching dashboard data:", error);

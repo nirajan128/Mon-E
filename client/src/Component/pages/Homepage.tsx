@@ -1,6 +1,5 @@
 import "../../App.css"
 import Navigation from "../Shared/Navigation";
-import Coin from "../Shared/3D";
 import SignInForm from "../form/SignInForm";
 
 function HomePage() {
@@ -14,9 +13,6 @@ function HomePage() {
                    <h4>Track</h4>
                    <h4>Save</h4>
                     <h4>Grow</h4>
-                    </div>
-                    <div className="components">
-                        <Coin />
                     </div>
                 </div>
                 <div className="col-sm-12 col-md-5 d-flex justify-content-center">

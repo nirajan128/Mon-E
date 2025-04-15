@@ -3,7 +3,7 @@ import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
 import PostForm from "../Shared/PostForm";
 import "../../App.css"
-import { EditModal } from "../Shared/EditFOrmModal";
+import { EditModal } from "../Shared/EditFormModal";
 import { DeleteModal } from "../Shared/DeleteModal";
 
 interface Expense {
@@ -14,6 +14,7 @@ interface Expense {
   description: string;
   amount: number;
   payment_type: string;
+  transaction_type: 'Debit' | 'Credit';
 }
 
 export default function Expenses() {
@@ -23,6 +24,9 @@ export default function Expenses() {
   const [totalExpenses, setTotalExpenses] = useState<number>(0);
   const [categoryTotals, setCategoryTotals] = useState<{ [key: string]: number }>({});
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
+  const [totalCredit, setTotalCredit] = useState<number>(0);
+const [totalDebit, setTotalDebit] = useState<number>(0);
+const [totalCash, setTotalCash] = useState<number>(0);
 
   // Filters for header
   const [headerMonthFilter, setHeaderMonthFilter] = useState<string>("All");
@@ -60,18 +64,37 @@ export default function Expenses() {
 
   // Calculate total expenses and category totals (based on header filter)
   useEffect(() => {
-    const filteredExpenses = headerMonthFilter === "All" ? expenses : expenses.filter(expense => expense.date.includes(`-${headerMonthFilter}-`));
-    
+    const filteredExpenses =
+      headerMonthFilter === "All"
+        ? expenses
+        : expenses.filter((expense) => expense.date.includes(`-${headerMonthFilter}-`));
+  
     const total = filteredExpenses.reduce((sum, expense) => sum + expense.amount, 0);
     setTotalExpenses(total);
-
+  
     const categoryMap: { [key: string]: number } = {};
-    filteredExpenses.forEach(({ category, amount }) => {
+    let debitTotal = 0;
+    let creditTotal = 0;
+    let cashTotal = 0
+  
+    filteredExpenses.forEach(({ category, amount, payment_type }) => {
       categoryMap[category] = (categoryMap[category] || 0) + amount;
+  
+      if (payment_type.toLowerCase() === "debit") {
+        debitTotal += amount;
+      } else if (payment_type.toLowerCase() === "credit") {
+        creditTotal += amount;
+      }else if (payment_type.toLowerCase() === "cash"){
+        cashTotal += amount;
+      }
     });
+  
     setCategoryTotals(categoryMap);
+    setTotalDebit(debitTotal);
+    setTotalCredit(creditTotal);
+    setTotalCash(cashTotal);
   }, [expenses, headerMonthFilter]);
-
+  
   // Filter expenses for table display
   const filteredTableExpenses = expenses.filter((expense) => {
     const categoryMatch = tableCategoryFilter === "All" || expense.category === tableCategoryFilter;
@@ -89,7 +112,13 @@ export default function Expenses() {
       <div className="mt-3">
         <div className="row headerRow align-items-center">
           <div className="col-md-5 text-center">
-            <h1 className="totalExp">${totalExpenses}</h1>
+            <h1 className="totalExp">${totalExpenses.toFixed(2)}</h1>
+            <div className="text-center fw-bold">
+            <p className="mb-1 text-muted">Debit Total: ${totalDebit.toFixed(2)}</p>
+<p className="mb-1 text-muted">Credit Total: ${totalCredit.toFixed(2)}</p>
+<p className="mb-1 text-muted">Cash Total: ${totalCash.toFixed(2)}</p>
+
+            </div>
           </div>
           <div className="col-md-5">
             <div className="p-2 d-flex justify-content-center flex-wrap">
