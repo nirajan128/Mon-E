@@ -5,6 +5,7 @@ import PostForm from "../Shared/PostForm";
 import "../../App.css"
 import { EditModal } from "../Shared/EditFormModal";
 import { DeleteModal } from "../Shared/DeleteModal";
+import { printElementAsPDF } from "../../utils/PrintUtils";
 
 interface Expense {
   id: number;
@@ -108,8 +109,19 @@ const [totalCash, setTotalCash] = useState<number>(0);
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   return (
-    <>
-      <div className="mt-3">
+    <div id="full-page">
+       <div className="print-buttons text-end my-3">
+      <button className="btn btn-outline-primary mx-1" onClick={() => printElementAsPDF("header-section", "header.pdf")}>
+        Print Header
+      </button>
+      <button className="btn btn-outline-secondary mx-1" onClick={() => printElementAsPDF("table-section", "expenses-table.pdf")}>
+        Print Table
+      </button>
+      <button className="btn btn-outline-success mx-1" onClick={() => printElementAsPDF("full-page", "full-page.pdf")}>
+        Print Full Page
+      </button>
+    </div>
+      <div className="mt-3" id="header-section">
         <div className="row headerRow align-items-center">
           <div className="col-md-5 text-center">
             <h1 className="totalExp">${totalExpenses.toFixed(2)}</h1>
@@ -143,8 +155,9 @@ const [totalCash, setTotalCash] = useState<number>(0);
 
       <hr />
 
-      {/* Table Filters */}
-      <div className="filters mt-4 d-flex">
+<div id="table-section">
+   {/* Table Filters */}
+   <div className="filters mt-4 d-flex">
         <select className="form-control form-select" value={tableCategoryFilter} onChange={(e) => setTableCategoryFilter(e.target.value)}>
           <option value="All">All Categories</option>
           {uniqueCategories.map((category, index) => (
@@ -217,6 +230,10 @@ const [totalCash, setTotalCash] = useState<number>(0);
           </tbody>
         </table>
       </div>
+</div>
+     
+
+
       {/* Edit Modal */}
       {selectedExpense && (
         <EditModal
@@ -245,6 +262,6 @@ const [totalCash, setTotalCash] = useState<number>(0);
         />
       )}
 
-    </>
+    </div>
   );
 }
