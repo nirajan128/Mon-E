@@ -28,6 +28,8 @@ export default function Expenses() {
   const [totalCredit, setTotalCredit] = useState<number>(0);
 const [totalDebit, setTotalDebit] = useState<number>(0);
 const [totalCash, setTotalCash] = useState<number>(0);
+const [dateSortOrder, setDateSortOrder] = useState<"asc" | "desc" | "none">("none");
+
 
   // Filters for header
   const [headerMonthFilter, setHeaderMonthFilter] = useState<string>("All");
@@ -97,11 +99,30 @@ const [totalCash, setTotalCash] = useState<number>(0);
   }, [expenses, headerMonthFilter]);
   
   // Filter expenses for table display
-  const filteredTableExpenses = expenses.filter((expense) => {
+  const filteredTableExpenses = expenses
+  .filter((expense) => {
     const categoryMatch = tableCategoryFilter === "All" || expense.category === tableCategoryFilter;
     const monthMatch = tableMonthFilter === "All" || expense.date.includes(`-${tableMonthFilter}-`);
     return categoryMatch && monthMatch;
+  })
+  .sort((a, b) => {
+    if (dateSortOrder === "asc") {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    } else if (dateSortOrder === "desc") {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    } else {
+      return 0; // no sort
+    }
   });
+
+  const toggleDateSort = () => {
+    setDateSortOrder(prev => {
+      if (prev === "none") return "asc";
+      if (prev === "asc") return "desc";
+      return "none";
+    });
+  };
+
 
   // Extract unique months and categories
   const uniqueCategories = Array.from(new Set(expenses.map(expense => expense.category)));
@@ -185,7 +206,9 @@ const [totalCash, setTotalCash] = useState<number>(0);
         <table className="table table-bordered table-responsive table-hover table-striped">
           <thead className="thead-dark">
             <tr>
-              <th>Date</th>
+            <th onClick={() => toggleDateSort()} style={{ cursor: "pointer" }}>
+  Date {dateSortOrder === "asc" ? "▲" : dateSortOrder === "desc" ? "▼" : ""}
+</th>
               <th>Category</th>
               <th>Amount ($)</th>
               <th>Description</th>
