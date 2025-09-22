@@ -3,7 +3,7 @@ import { useAuth } from "../../Context/AuthContext";
 import axios from "axios";
 import PostForm from "../Shared/PostForm";
 import { DeleteModal } from "../Shared/DeleteModal";
-import { EditModal } from "../Shared/EditFOrmModal";
+import { EditModal } from "../Shared/EditFormModal";
 
 interface Income {
   id: number;
@@ -29,6 +29,16 @@ export default function Income() {
   const [tableMonthFilter, setTableMonthFilter] = useState<string>("All");
 
   const [selectedIncome, setSelectedIncome] = useState<Income | null>(null);
+  const [dateSortOrder, setDateSortOrder] = useState<"asc" | "desc" | "none">("none");
+
+  const toggleDateSort = () => {
+    setDateSortOrder((prev) => {
+      if (prev === "none") return "asc";
+      if (prev === "asc") return "desc";
+      return "none";
+    });
+  };
+  
 
   const fetchIncome = useCallback(async () => {
     if (!token) {
@@ -76,11 +86,22 @@ export default function Income() {
     setTotals({ Tax: taxTotal, CPP: cppTotal, EI: eiTotal });
   }, [income, headerMonthFilter]);
 
-  const filteredTableIncome = income.filter((inc) => {
+  const filteredTableIncome = income
+  .filter((inc) => {
     const sourceMatch = tableSourceFilter === "All" || inc.source === tableSourceFilter;
     const monthMatch = tableMonthFilter === "All" || inc.date.includes(`-${tableMonthFilter}-`);
     return sourceMatch && monthMatch;
+  })
+  .sort((a, b) => {
+    if (dateSortOrder === "asc") {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    } else if (dateSortOrder === "desc") {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    } else {
+      return 0;
+    }
   });
+
 
   const uniqueSource = Array.from(new Set(income.map((inc) => inc.source)));
   const uniqueMonths = Array.from(new Set(income.map((inc) => inc.date.split("-")[1])));
@@ -94,13 +115,13 @@ export default function Income() {
       <div>
         <div className="row headerRow align-items-center">
           <div className="col-md-5 text-center">
-            <h1 className="totalExp">${totalIncome}</h1>
+            <h1 className="totalExp">${totalIncome.toFixed(2)}</h1>
           </div>
           <div className="col-md-5">
             <div className="p-2 d-flex justify-content-center flex-wrap taxes">
-              <div className="category-box m-2 p-3"><strong>Tax</strong><br /><span>${totals.Tax}</span></div>
-              <div className="category-box m-2 p-3"><strong>CPP</strong><br /><span>${totals.CPP}</span></div>
-              <div className="category-box m-2 p-3"><strong>EI</strong><br /><span>${totals.EI}</span></div>
+              <div className="category-box m-2 p-3"><strong>Tax</strong><br /><span>${totals.Tax.toFixed(2)}</span></div>
+              <div className="category-box m-2 p-3"><strong>CPP</strong><br /><span>${totals.CPP.toFixed(2)}</span></div>
+              <div className="category-box m-2 p-3"><strong>EI</strong><br /><span>${totals.EI.toFixed(2)}</span></div>
             </div>
           </div>
           <div className="col-md-2 text-center">
@@ -140,7 +161,10 @@ export default function Income() {
         <table className="table table-bordered table-responsive table-hover table-striped">
           <thead className="thead-dark">
             <tr>
-              <th>Date</th>
+            <th onClick={toggleDateSort} style={{ cursor: "pointer" }}>
+  Date {dateSortOrder === "asc" ? "▲" : dateSortOrder === "desc" ? "▼" : ""}
+</th>
+
               <th>Source</th>
               <th>Amount ($)</th>
               <th>Description</th>
